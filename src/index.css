@@ -1,0 +1,78 @@
+/* je vois pas de diff donc à méditer sur leur utilité */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+*:focus-visible {
+  outline: 3px dashed #228bec;
+  outline-offset: 0;
+}
+html {
+  font: 62.5% / 1.15 sans-serif;
+}
+
+@media screen and (min-width: 550px) {
+  .taskApp {
+    padding: 4rem;
+  }
+}
+
+.taskApp > form {
+  max-width: 100%;
+}
+.taskApp > button {
+  display: block;
+  margin: 0;
+  margin-bottom: 1rem;
+  max-width: 100%;
+  text-align: center;
+}
+/* fin */
+
+/* main parameters */
+@media screen and (min-width: 620px) { /*resize a little bit everything*/
+  body { /*  everything exept skip connection button*/
+    font-size: 3rem;
+    line-height: 1.31579;
+    background-color: white;
+    color: black;
+    margin: 0 auto;
+    max-width: 68rem;
+    width: 100%;
+  }
+}
+
+a:link {text-decoration: none; color:black;}
+a:visited {text-decoration: none;color:black; }
+a:hover {text-decoration: underline; color:purple;}
+a:active {text-decoration: underline; color:black;}
+/* fin */
+
+/* buttons other parameters*/
+.connection-button:hover {
+  background-color: #fff;
+}
+
+.connection-button:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+.choice-button:focus {
+  box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.choice-button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.choice-button:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+/* fin */
+
+/* */
