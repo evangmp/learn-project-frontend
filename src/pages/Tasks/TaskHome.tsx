@@ -27,7 +27,7 @@ const TasksHome = () => {
             <div>
                 <Routes>
                     <Route path="/" element={<TasksList/>}/>
-                    <Route path="/:iduser/:idtask" element={<Task/>}/>
+                    <Route path="/:idUser/:idTask" element={<Task/>}/>
                 </Routes>
             </div>
         </div>

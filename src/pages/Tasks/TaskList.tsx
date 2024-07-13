@@ -1,5 +1,5 @@
 import React, {CSSProperties, useEffect, useState} from "react";
-import {ITaskData, Task} from "../../types/Task.ts";
+import {Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
@@ -27,7 +27,8 @@ const TaskList = () => {
     const getTask = () => {
         TaskDataService.getUserData(inputId)
             .then((response: AxiosResponse) => {
-                if(response.data.taskName == undefined) {
+                if(response.data.taskName[0] == undefined) {
+                    setListTasks(null);
                     return;
                 }
                 let i: number = 0;
@@ -40,14 +41,6 @@ const TaskList = () => {
                         taskAchievement: response.data.taskAchievement[i],
                         taskDate: response.data.taskDate[i],
                     });
-                    /*
-                    const note1 = test[i];
-                    console.log("note1 : " + note1)
-                    console.log("name " + i + " : " + note1.taskName);
-                    console.log("Discipline " + i + " : " + note1.taskDiscipline);
-                    console.log("Achievement " + i + " : " + note1.taskAchievement);
-                    console.log("Date " + i + " : " + note1.taskDate);
-                     */
                     i++;
                 }
                 setListTasks(test);
@@ -57,46 +50,22 @@ const TaskList = () => {
             });
     };
 
-    // put method to update the state of task, event when click on checkbox
-
-    /*
-    const updatePublished = (task: ITaskData) => {
-        const data = {
-            id: task.id,
-            name: task.name,
-            discipline: task.discipline,
-            active: !task.active,
-            date: task.date,
-        };
-        TaskDataService.update(task.id, data)
-            .then((response: AxiosResponse) => {
-                console.log(response.data);
-            })
-            .catch((e: Error) => {
-                console.log(e);
-            });
-    };
-     */
-
-
     // useful to set if the task needs to be print, with DateAlgo
     const hiddenOrNo = (task: Task) => {
         // will call another const, this one will compare the date of the task and the actual date,
         // to render if the task will be print or no with a boolean
         const printOrNo = DateFunction.DateIdea(task, date);
         console.log("Task : " + task.taskName + ", is good or no : " + printOrNo);
-        return printOrNo
-    }
-
-
+        return printOrNo;
+    };
 
     // CSS Style
     const tasksListTitle: CSSProperties = {
         font: '3.5rem "Fira Sans", sans-serif', // "small-caps bold 24px/1 sans-serif",
-    }
+    };
     const listGeneralSettings: CSSProperties = {
         listStyleType: "none",
-    }
+    };
     const divTaskSetting: CSSProperties = {
         WebkitFontSmoothing: "antialiasing",
         boxSizing: "border-box",
@@ -110,7 +79,7 @@ const TaskList = () => {
         paddingLeft: "40px",
         position: "relative",
         flex: "0 0 100%",
-    }
+    };
 
     return (
         <div className="list row">

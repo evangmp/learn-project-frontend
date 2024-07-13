@@ -29,13 +29,18 @@ const deleteTest = (data: any, idTask: number) => {
     return http.post<ITaskData>(`auth/delete/${idTask}`, data);
 }
 
+const updateTask = (data: any) => {
+    return http.post<ITaskData>("auth/update", data);
+}
+
 const SecurityService = {
     signUp,
     signIn,
     getAllUserData,
     getUserData,
     createUserTask,
-    deleteTest
+    deleteTest,
+    updateTask,
 };
 
 export default SecurityService;

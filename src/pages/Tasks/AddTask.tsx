@@ -21,16 +21,9 @@ const AddTask = () => {
     const disciplineTasks: Map<number, Discipline> = new Map();
     const achievementTasks: Map<number, [number, number, number, number, number, number, number, number, number, number]> = new Map();
     const dateTasks: Map<number, string> = new Map();
-    const allTheTaskInitialState: ITaskData = {
-        id: id_user,
-        taskName: nameTasks,
-        taskDiscipline: disciplineTasks,
-        taskAchievement: achievementTasks,
-        taskDate: dateTasks,
-    };
-    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(allTheTaskInitialState);
+    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
 
-
+    // post method to send data
     const postMethod = (taskToSend: ITaskData) => {
         TaskDataService.createUserTask(taskToSend)
             .then((response: AxiosResponse) => {
@@ -42,7 +35,7 @@ const AddTask = () => {
             });
     }
 
-    // get method to have all the other tasks
+    // get method to have all the tasks
     const getUserTask = (id_user: number) => {
         if(id_user < 0 || id_user == null) {
             console.log("non non non");
@@ -58,20 +51,16 @@ const AddTask = () => {
                     taskAchievement: response.data.taskAchievement,
                     taskDate: response.data.taskDate,
                 });
-                console.log(response.data.taskName === {});
-                if(!(response.data.taskName === {})) {
+                if(response.data.taskName[0] == undefined) {
                     setFirstTask(true);
                 }
                 else {
                     setFirstTask(false);
                 }
-                console.log(firstTask);
-
+                console.log("firstTask ? " + firstTask);
             })
             .catch((e: Error) => {
                 console.log(e);
-                console.log("erreur venant du get addtask");
-
             });
     };
 
@@ -82,7 +71,7 @@ const AddTask = () => {
         setIdUser(0);
     };
 
-    // post method to save the new task
+    // to set for post method and save the new task
     const submitTask = () => {
         // early return
         if (selectedDiscipline == null) {
@@ -94,19 +83,12 @@ const AddTask = () => {
             return;
         }
         if(id_user < 0 || id_user == null) {
-            console.log("non non non2");
+            console.error("id non conforme");
             return;
         }
 
         // initialize setAllTasks
         getUserTask(id_user);
-
-        console.log(firstTask);
-
-        if(allTheTasks.taskName[0]) {
-            setFirstTask(false);
-            console.log("yes");
-        }
 
         if(firstTask) {
             console.log("si ça passe par là c'est que c'est cet id est pas initialité");
@@ -121,12 +103,17 @@ const AddTask = () => {
             return;
         }
 
-        // to have the size of all the tasks already presents
+        // to have the size of all the tasks already presents (because function like size and length doesn't work) and set map
         let i: number = 0;
         while (allTheTasks.taskName[i] !== undefined) {
+            nameTasks.set(i, allTheTasks.taskName[i]);
+            disciplineTasks.set(i, allTheTasks.taskDiscipline[i]);
+            achievementTasks.set(i, allTheTasks.taskAchievement[i]);
+            dateTasks.set(i, allTheTasks.taskDate[i]);
+            console.log(i + " : " + nameTasks.get(i));
             i++;
         }
-
+/*
         let o = 0;
         while(allTheTasks.taskName[o] !== undefined) {
             nameTasks.set(o, allTheTasks.taskName[o]);
@@ -136,6 +123,7 @@ const AddTask = () => {
             console.log(o + " : " + nameTasks.get(o));
             o++;
         }
+ */
 
         // when called, add at the of each lists the new values
         nameTasks.set(i, inputName);

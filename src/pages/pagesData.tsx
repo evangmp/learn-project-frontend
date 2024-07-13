@@ -28,7 +28,7 @@ const pagesData: routerType[] = [
         title:"task home",
     },
     {
-        path: "home/:iduser/:idtask",
+        path: "home/:idUser/:idTask",
         element: <Task/>,
         title: "task parameters, updated, etc"
     },

@@ -6,7 +6,7 @@ import CSSConstants from "../components/CSSConstants.ts"
 import {AxiosResponse} from "axios";
 
 const Task = () => {
-    const { idtask, iduser }= useParams();
+    const { idTask, idUser }= useParams();
     const navigate = useNavigate();
 
     // for input
@@ -14,7 +14,7 @@ const Task = () => {
     const [inputName, setInputName] = useState<string>("");
 
     // to save all the tasks associate with the user id (and then update or delete a task)
-    const [allTheTask, setAllTheTask] = useState<ITaskData>(null);
+    const [allTheTask, setAllTheTasks] = useState<ITaskData>(null);
     const nameTasks: Map<number, string> = new Map();
     const disciplineTasks: Map<number, Discipline> = new Map();
     const achievementTasks: Map<number, [number, number, number, number, number, number, number, number, number, number]> = new Map();
@@ -28,10 +28,9 @@ const Task = () => {
     const getTask = (id: number) => {
         TaskDataService.getUserData(id)
             .then((response: AxiosResponse) => {
-                setInputName(response.data.taskName[idtask]);
-                setSelectedDiscipline(response.data.taskDiscipline[idtask]);
-
-                setAllTheTask({
+                setInputName(response.data.taskName[idTask]);
+                setSelectedDiscipline(response.data.taskDiscipline[idTask]);
+                setAllTheTasks({
                     id: id,
                     taskName: response.data.taskName,
                     taskDate: response.data.taskDate,
@@ -41,17 +40,19 @@ const Task = () => {
                 console.log(response.data);
             })
             .catch((e: Error) => {
+                console.log("get fnctionne pas");
                 console.log(e);
             });
     };
 
     useEffect(() => { // voir comment ça fonctionne
-        if(iduser)
-            getTask(Number(iduser));
-    }, [iduser, idtask]);
+        if(idUser)
+            getTask(Number(idUser));
+    }, [idUser, idTask]);
 
 
     const updateTutorial = () => {
+        // early return
         if(selectedDiscipline == null) {
             console.error("L'utilisateur n'a pas sélectionné de discipline");
             return;
@@ -61,58 +62,49 @@ const Task = () => {
             return;
         }
 
-        // have the
+        // have the number of tasks
         let i: number = 0;
         while(allTheTask.taskName[i] !== undefined) {i++;}
-        console.log(i);
 
-        i = 0;
-        while(allTheTask.taskName[i] !== undefined) {
-            if(i == idtask) {
-                nameTasks.set(Number(i), inputName);
-                disciplineTasks.set(Number(i), selectedDiscipline);
-                achievementTasks.set(Number(i), allTheTask.taskAchievement[i]);
-                dateTasks.set(Number(i), allTheTask.taskDate[i]);
+        // to set Map, with new data for the task which is update and same data for other task
+        let p: number = 0;
+        while(allTheTask.taskName[p] !== undefined) {
+            if(p == idTask) {
+                nameTasks.set(Number(p), inputName);
+                disciplineTasks.set(Number(p), selectedDiscipline);
+                achievementTasks.set(Number(p), allTheTask.taskAchievement[p]);
+                dateTasks.set(Number(p), allTheTask.taskDate[p]);
             }
             else {
-                nameTasks.set(Number(i), allTheTask.taskName[i]);
-                disciplineTasks.set(Number(i), allTheTask.taskDiscipline[i]);
-                achievementTasks.set(Number(i), allTheTask.taskAchievement[i]);
-                dateTasks.set(Number(i), allTheTask.taskDate[i]);
+                nameTasks.set(Number(p), allTheTask.taskName[p]);
+                disciplineTasks.set(Number(p), allTheTask.taskDiscipline[p]);
+                achievementTasks.set(Number(p), allTheTask.taskAchievement[p]);
+                dateTasks.set(Number(p), allTheTask.taskDate[p]);
             }
-            console.log(nameTasks.get(i));
-            i++
+            console.log(nameTasks.get(p));
+            p++
         }
 
-        const nouveaulasuite = {
-            id: Number(iduser),
-            taskName: {0: allTheTask.taskName[0]},
-            taskDiscipline: {0: allTheTask.taskDiscipline[0]},
-            taskAchievement: {0: allTheTask.taskAchievement[0]},
-            taskDate: {0: allTheTask.taskDate[0]},
-        };
-
-        let p = 1;
-        while(nameTasks.get(p) !== undefined) {
-            nouveaulasuite.taskName[p.toString()] = nameTasks.get(p);
-            nouveaulasuite.taskDiscipline[p.toString()] = disciplineTasks.get(p);
-            nouveaulasuite.taskAchievement[p.toString()] = achievementTasks.get(p);
-            nouveaulasuite.taskDate[p.toString()] = dateTasks.get(p);
-            console.log(p + " + " + nameTasks.get(p));
-            p++;
-        }
-
+        // preparation of data to send
         const taskToSend = {
-            id: Number(iduser),
-            taskName: nameTasks,
-            taskDiscipline: disciplineTasks,
-            taskDate: dateTasks,
-            taskAchievement: achievementTasks,
+            id: Number(idUser),
+            taskName: {0: nameTasks.get(0)},
+            taskDiscipline: {0: disciplineTasks.get(0)},
+            taskAchievement: {0: achievementTasks.get(0)},
+            taskDate: {0: dateTasks.get(0)},
         };
-        console.log(nouveaulasuite);
 
+        let q = 1;
+        while(nameTasks.get(q) !== undefined) {
+            taskToSend.taskName[q.toString()] = nameTasks.get(q);
+            taskToSend.taskDiscipline[q.toString()] = disciplineTasks.get(q);
+            taskToSend.taskAchievement[q.toString()] = achievementTasks.get(q);
+            taskToSend.taskDate[q.toString()] = dateTasks.get(q);
+            console.log(q + " + " + nameTasks.get(q));
+            q++;
+        }
 
-        TaskDataService.createUserTask(taskToSend)
+        TaskDataService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
                 console.debug(response);
                 setMessage("The tutorial was updated successfully!");
@@ -123,7 +115,7 @@ const Task = () => {
     };
 
     const deleteTutorial = () => {
-        TaskDataService.deleteTest(allTheTask, Number(idtask))
+        TaskDataService.deleteTest(allTheTask, Number(idTask))
             .then((response: AxiosResponse) => {
                 console.log(response.data);
                 navigate("/home/");
@@ -167,7 +159,6 @@ const Task = () => {
                             }}
                             value={"physics"}
                         />
-
                         <label htmlFor="physic-checkbox">Physics</label>
 
                         <input
@@ -183,9 +174,9 @@ const Task = () => {
                             value={"mathematics"}
                         />
                         <label htmlFor="math-checkbox">Mathematics</label>
-
                     </div>
                 </form>
+
                 <button
                     style={CSSConstants.buttonConnectionPageSettings}
                     className="edit-button-3"
