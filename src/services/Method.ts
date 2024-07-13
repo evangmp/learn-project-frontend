@@ -2,7 +2,7 @@ import {Discipline} from "../types/task.ts";
 import TaskDataService from "../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 
-
+// update task method, link with back
 const updateTask = (name: string, discipline: Discipline, achievement: number[], allTheTasks, idUser: number, idTask: number) => {
     const nameTasks: Map<number, string> = new Map();
     const disciplineTasks: Map<number, Discipline> = new Map();

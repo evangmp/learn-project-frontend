@@ -7,6 +7,7 @@ import DateFunction from "../Date/DateFunctions.tsx";
 import {Link} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
 import Method from "../../services/Method.ts";
+import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
 
 const TaskList = () => {
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
@@ -64,7 +65,7 @@ const TaskList = () => {
     const hiddenOrNo = (task: Task) => {
         // will call another const, this one will compare the date of the task and the actual date,
         // to render if the task will be print or no with a boolean
-        const printOrNo = DateFunction.DateIdea(task, date);
+        const printOrNo = SetShowTaskOrNo.SetShowTaskOrNo(task, date);
         console.log("Task : " + task.taskName + ", is good or no : " + printOrNo);
         return printOrNo;
     };

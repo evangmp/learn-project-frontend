@@ -31,7 +31,7 @@ const SetDefaultChecked = (taskDate: string, achievement: number[]) => {
             const difference = numberDay - numberDayTask;
 
             // if the difference (in terms of days)is = 0 (same day), 1 (next day), 3 (to continue), etc
-            return DateFunction.setBooleanDefaultChecked(difference, achievement);
+            return DateFunction.setParameterCorresponding(difference, achievement, 2);
         }
 
         // if the taskYear is not the same of the actual date
@@ -47,7 +47,7 @@ const SetDefaultChecked = (taskDate: string, achievement: number[]) => {
             const numberDayTask = DateFunction.switchToLenghtYear(dayTask, monthTask, 0);
             const difference = numberDay - numberDayTask;
             console.log(difference);
-            return DateFunction.setBooleanDefaultChecked(difference, achievement);
+            return DateFunction.setParameterCorresponding(difference, achievement, 2);
         }
         else {
             return DateFunction.setBooleanDefaultCheckedDifferentYear(yearActualDate, dayTask, monthTask, numberDay, yearTask, achievement);
@@ -85,7 +85,7 @@ const taskSetAchievement = (taskDate: string, achievement: number[]) => {
             const difference = numberDay - numberDayTask;
 
             // if the difference (in terms of days)is = 0 (same day), 1 (next day), 3 (to continue), etc
-            return DateFunction.setAchievement(difference, achievement);
+            return DateFunction.setParameterCorresponding(difference, achievement, 1);
         }
 
         // if the taskYear is not the same of the actual date
@@ -101,7 +101,7 @@ const taskSetAchievement = (taskDate: string, achievement: number[]) => {
             const numberDayTask = DateFunction.switchToLenghtYear(dayTask, monthTask, 0);
             const difference = numberDay - numberDayTask;
             console.log(difference);
-            return DateFunction.setAchievement(difference, achievement);
+            return DateFunction.setParameterCorresponding(difference, achievement, 1);
         }
         else {
             return DateFunction.setBooleanAchievementDifferentYear(yearActualDate, dayTask, monthTask, numberDay, yearTask, achievement);
