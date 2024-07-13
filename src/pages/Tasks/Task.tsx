@@ -1,8 +1,8 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {ITaskData, Discipline} from "../../types/Task.ts";
-import TaskDataService from "../../services/AuthentificationService.ts"
-import CSSConstants from "../components/CSSConstants.ts"
+import TaskDataService from "../../services/AuthentificationService.ts";
+import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
 
 const Task = () => {

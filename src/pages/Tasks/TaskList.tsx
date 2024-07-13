@@ -1,10 +1,12 @@
 import React, {CSSProperties, useEffect, useState} from "react";
-import {Task} from "../../types/Task.ts";
+import {ITaskData, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
 import DateFunction from "../Date/DateFunctions.tsx";
 import {Link} from "react-router-dom";
+import SetAchievement from "../Date/SetAchievement.ts";
+import Method from "../../services/Method.ts";
 
 const TaskList = () => {
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
@@ -16,6 +18,7 @@ const TaskList = () => {
     const [inputId, setInputId] = useState<number>(null);
 
     const [listTasks, setListTasks] = useState<Array<Task>>(null);
+    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
 
     // when its run call the const to have all the tasks and setDate (if not date is null)
     useEffect(() => {
@@ -44,6 +47,13 @@ const TaskList = () => {
                     i++;
                 }
                 setListTasks(test);
+                setAllTheTasks({
+                    id: inputId,
+                    taskName: response.data.taskName,
+                    taskDiscipline: response.data.taskDiscipline,
+                    taskAchievement: response.data.taskAchievement,
+                    taskDate: response.data.taskDate,
+                })
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -58,6 +68,20 @@ const TaskList = () => {
         console.log("Task : " + task.taskName + ", is good or no : " + printOrNo);
         return printOrNo;
     };
+
+    // set default checked or no
+    const defaultChecked = (taskDate: string, taskAchievement: number[]) => {
+        const state: boolean = SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
+        console.log("state task boolean : " + state);
+        return state;
+    }
+
+    // update achievement file
+    const achievementUpdate = (task: Task) => {
+        const state: number[] = SetAchievement.taskSetAchievement(task.taskDate, task.taskAchievement);
+        Method.updateTask(task.taskName, task.taskDiscipline, state, allTheTasks, inputId, Number(task.id));
+        return state;
+    }
 
     // CSS Style
     const tasksListTitle: CSSProperties = {
@@ -115,15 +139,18 @@ const TaskList = () => {
                                     hidden={!hiddenOrNo(task)}
                                 >
                                     <div style={divTaskSetting}>
-                                        {task.taskName}
+                                        <input
+                                            type="checkbox"
+                                            defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
+                                            onChange={() => {
+                                                task.taskAchievement = achievementUpdate(task);
+                                            }}
+                                        />
+                                        <label style={CSSConstants.inputGeneralSettings}>{task.taskName}</label>
                                     </div>
 
                                     <div style={divTaskSetting}>
-                                        {task.taskDiscipline}
-                                    </div>
-
-                                    <div style={divTaskSetting}>
-                                        {task.taskDate}
+                                        <label>Discipline : {task.taskDiscipline}</label>
                                     </div>
 
                                     <div style={divTaskSetting}>
@@ -138,7 +165,6 @@ const TaskList = () => {
                                     </div>
                                 </li>
                             </div>
-
                         )
                     )}
                 </ul>
@@ -149,7 +175,6 @@ const TaskList = () => {
                         <p>Open bar to learn</p>
                         <br/>
                     </div>
-
                 ) : (
                     <div>No task saved</div>
                 )}

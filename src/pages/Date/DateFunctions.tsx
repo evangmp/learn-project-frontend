@@ -1,4 +1,4 @@
-import {ITaskData, Task} from "../../types/Task.ts";
+import {Task} from "../../types/Task.ts";
 
 // to convert a full string date to a more compressed date
 const sortDate = (dateToSort: string) => {
@@ -10,7 +10,7 @@ const sortDate = (dateToSort: string) => {
         }
     }
     return dictDate;
-}
+};
 
 // from a dictionary, extract a first number and a second, or just a number (for 1 to 9 and after 10 to 12 or 30, etc)
 const convertDicToNumber = (dicActual: any, first: number, second: number) => { // problem
@@ -20,13 +20,13 @@ const convertDicToNumber = (dicActual: any, first: number, second: number) => { 
     const firstNumber: string = dicActual[first];
     const secondNumber: string = firstNumber.concat("", dicActual[second]);
     return Number(secondNumber);
-}
+};
 
 // boolean test if it is a leap year or no
 const testLeapYear = (year: number) => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 
-}
+};
 
 const switchToLenghtYear = (numberDay: number, numberMonth: number, leapYear: number) => {
     switch (numberMonth) {
@@ -55,7 +55,7 @@ const switchToLenghtYear = (numberDay: number, numberMonth: number, leapYear: nu
         case 12:
             return (numberDay + 334+ leapYear); // december (31)
     }
-}
+};
 
 // if the difference between the actual day and the day of the task is interesting
 const boolForTaksOrNo = (difference: number) => {
@@ -66,7 +66,7 @@ const boolForTaksOrNo = (difference: number) => {
         }
     }
     return false;
-}
+};
 
 // condition test for year when is from the task, and difference calculation
 const taskYearTest = (yearActualDate: number, dayTask: number, monthTask: number, numberDay: number, yearTask: number) => {
@@ -78,7 +78,6 @@ const taskYearTest = (yearActualDate: number, dayTask: number, monthTask: number
         // to have the difference in terms of year(s)
         const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 366);
 
-        console.log(difference);
         return boolForTaksOrNo(difference);
     }
     else {
@@ -88,12 +87,80 @@ const taskYearTest = (yearActualDate: number, dayTask: number, monthTask: number
         // to have the difference in terms of year(s)
         const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 365);
 
-        console.log(difference);
         return boolForTaksOrNo(difference);
+    }
+};
+
+const setAchievement = (difference: number, achievement: number[]) => {
+    const dayWhereTaskAppear: number[] = [0, 1, 3, 7, 14, 30, 60, 120, 240, 360];
+    for(let i: number = 0; i < dayWhereTaskAppear.length; i++) {
+        if(dayWhereTaskAppear[i] == difference) {
+            if(achievement[i] == 0) {
+                achievement[i] = 1;
+                return achievement;
+            }
+            else {
+                achievement[i] = 0;
+                return achievement;
+            }
+        }
+    }
+};
+
+const setBooleanAchievementDifferentYear = (yearActualDate: number, dayTask: number, monthTask: number, numberDay: number, yearTask: number, achievement: number[]) => {
+    // if the task year is a leap year or no
+    if(testLeapYear(yearActualDate)) {
+        // number of days from 1st january
+        const numberDayTask = switchToLenghtYear(dayTask, monthTask, 1);
+
+        // to have the difference in terms of year(s)
+        const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 366);
+        return setAchievement(difference, achievement);
+    }
+    else {
+        // number of days from 1st january
+        const numberDayTask = switchToLenghtYear(dayTask, monthTask, 0);
+
+        // to have the difference in terms of year(s)
+        const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 365);
+        return setAchievement(difference, achievement);
     }
 }
 
+const setBooleanDefaultChecked = (difference: number, achievement: number[]) => {
+    const dayWhereTaskAppear = [0, 1, 3, 7, 14, 30, 60, 120, 240, 360];
+    for(let i = 0; i<dayWhereTaskAppear.length; i++) {
+        if(dayWhereTaskAppear[i] === difference) {
+            if(achievement[i] == 0) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
+    return;
+};
 
+const setBooleanDefaultCheckedDifferentYear = (yearActualDate: number, dayTask: number, monthTask: number, numberDay: number, yearTask: number, achievement: number[]) => {
+    // if the task year is a leap year or no
+    if(testLeapYear(yearActualDate)) {
+        // number of days from 1st january
+        const numberDayTask = switchToLenghtYear(dayTask, monthTask, 1);
+
+        // to have the difference in terms of year(s)
+        const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 366);
+        return setBooleanDefaultChecked(difference, achievement);
+    }
+    else {
+        // number of days from 1st january
+        const numberDayTask = switchToLenghtYear(dayTask, monthTask, 0);
+
+        // to have the difference in terms of year(s)
+        const difference = numberDay - numberDayTask + ((yearActualDate - yearTask) * 365);
+        return setBooleanDefaultChecked(difference, achievement);
+    }
+};
 
 const DateIdea = (task: Task, dateDay: Date) => {
     // convert string date to more compressed date format
@@ -146,10 +213,20 @@ const DateIdea = (task: Task, dateDay: Date) => {
             return taskYearTest(yearActualDate, dayTask, monthTask, numberDay, yearTask);
         }
     }
-}
+};
 
 const DateFunction = {
     DateIdea,
-}
+    sortDate,
+    convertDicToNumber,
+    testLeapYear,
+    switchToLenghtYear,
+    boolForTaksOrNo,
+    taskYearTest,
+    setAchievement,
+    setBooleanDefaultChecked,
+    setBooleanDefaultCheckedDifferentYear,
+    setBooleanAchievementDifferentYear,
+};
 
 export default DateFunction;
