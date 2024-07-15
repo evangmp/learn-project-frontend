@@ -62,8 +62,55 @@ const updateTask = (name: string, discipline: Discipline, achievement: number[],
         });
 };
 
+const getIdByUsername = (username: string) => {
+    TaskDataService.getIdByUsername(username)
+        .then((response: AxiosResponse) => {
+            console.debug(response);
+            return response.data.id;
+        })
+        .catch((e: Error) => {
+            console.log(e);
+        });
+    return null;
+};
+
+const deleteTask = (data, idTask: number) => {
+    console.log("data :");
+    console.log(data);
+    console.log("idtask : ");
+    console.log(idTask);
+    TaskDataService.deleteTest(data, idTask)
+        .then((response: AxiosResponse) => {
+            console.debug(response);
+        })
+        .catch((e: Error) => {
+            console.log(e);
+        });
+};
+
+const AccountInitialisation = (id: number) => {
+    const data = {
+        id: id,
+        taskName: {0: "exemple Task"},
+        taskDate: {0: new Date().toLocaleString()},
+        taskAchievement: {0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+        taskDiscipline: {0: "mathematics"},
+    };
+
+    TaskDataService.createUserTask(data)
+        .then((response: AxiosResponse) => {
+            console.debug(response);
+        })
+        .catch((e: Error) => {
+            console.log(e);
+        });
+}
+
 const Method = {
     updateTask,
+    getIdByUsername,
+    AccountInitialisation,
+    deleteTask,
 }
 
 export default Method;

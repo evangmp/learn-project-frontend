@@ -3,20 +3,19 @@ import {ITaskData, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
-import DateFunction from "../Date/DateFunctions.tsx";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
 import Method from "../../services/Method.ts";
 import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
 
 const TaskList = () => {
+    const { idUser}= useParams();
+
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
     const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
     // to set date and send it to the DateAlgo
     const [date, setDate] = useState<Date>(new Date());
-
-    const [inputId, setInputId] = useState<number>(null);
 
     const [listTasks, setListTasks] = useState<Array<Task>>(null);
     const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
@@ -24,12 +23,14 @@ const TaskList = () => {
     // when its run call the const to have all the tasks and setDate (if not date is null)
     useEffect(() => {
         setDate(new Date());
-    }, []);
+        if(idUser)
+            getTask(Number(idUser));
+    }, [idUser]);
 
 
     // get method to bring all the tasks from the DB
-    const getTask = () => {
-        TaskDataService.getUserData(inputId)
+    const getTask = (idUser: number) => {
+        TaskDataService.getUserData(idUser)
             .then((response: AxiosResponse) => {
                 if(response.data.taskName[0] == undefined) {
                     setListTasks(null);
@@ -49,7 +50,7 @@ const TaskList = () => {
                 }
                 setListTasks(test);
                 setAllTheTasks({
-                    id: inputId,
+                    id: idUser,
                     taskName: response.data.taskName,
                     taskDiscipline: response.data.taskDiscipline,
                     taskAchievement: response.data.taskAchievement,
@@ -80,7 +81,7 @@ const TaskList = () => {
     // update achievement file
     const achievementUpdate = (task: Task) => {
         const state: number[] = SetAchievement.taskSetAchievement(task.taskDate, task.taskAchievement);
-        Method.updateTask(task.taskName, task.taskDiscipline, state, allTheTasks, inputId, Number(task.id));
+        Method.updateTask(task.taskName, task.taskDiscipline, state, allTheTasks, Number(idUser), Number(task.id));
         return state;
     }
 
@@ -109,26 +110,6 @@ const TaskList = () => {
     return (
         <div className="list row">
             <div className="col-md-6">
-                <div>
-                    <label htmlFor="id_choice">
-                        enter an id :
-                    </label>
-                    <input
-                        style={CSSConstants.inputGeneralSettings}
-                        type="number"
-                        id="id_choice"
-                        onChange={(event) => {
-                            setInputId(Number(event.target.value));
-                        }}
-                    />
-                    <button onClick={() => {
-                        getTask();
-                        console.log("id : " + inputId);
-                    }}>
-                        ok
-                    </button>
-                </div>
-
                 <h4 style={tasksListTitle}>Tasks List</h4>
 
                 <ul className="list-group">
@@ -157,7 +138,7 @@ const TaskList = () => {
                                     <div style={divTaskSetting}>
                                         <button /*style={CSSConstants.buttonMainPageSettings}*/>
                                             <Link
-                                                to={"/home/" + inputId + "/" + task.id}
+                                                to={"/home/" + idUser + "/" + task.id}
                                                 className="nav-link-edit"
                                             >
                                                 Edit

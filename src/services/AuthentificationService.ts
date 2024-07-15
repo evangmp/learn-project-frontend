@@ -21,6 +21,10 @@ const getUserData = (id: number) => {
     return http.get<ITaskData>(`/auth/tasks/${id}`);
 }
 
+const getIdByUsername = (username: string) => {
+    return http.get<number>(`/auth/id/${username}`);
+}
+
 const createUserTask = (data: any) => {
     return http.post<ITaskData>("/auth/create", data);
 }
@@ -41,6 +45,7 @@ const SecurityService = {
     createUserTask,
     deleteTest,
     updateTask,
+    getIdByUsername,
 };
 
 export default SecurityService;

@@ -1,22 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ITaskData, Discipline} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import SecurityService from "../../services/AuthentificationService.ts";
 
 const AddTask = () => {
+    const { idUser}= useParams();
+
+    useEffect(() => {
+        if(idUser)
+            getUserTask(Number(idUser));
+    }, [idUser]);
+
     // boolean to set the discipline checkboxes
     const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | undefined>(undefined);
     const [inputName, setInputName] = useState<string>("");
 
     const [taskSaved, setTaskSaved] = useState<boolean>(false);
     const [firstTask, setFirstTask] = useState<boolean>(false);
-    const [idUser, setIdUser] = useState<number>(null);
 
     // initialization of setallthetasks
-    const id_user: number = idUser;
+    const id_user: number = Number(idUser);
     const nameTasks: Map<number, string> = new Map();
     const disciplineTasks: Map<number, Discipline> = new Map();
     const achievementTasks: Map<number, [number, number, number, number, number, number, number, number, number, number]> = new Map();
@@ -68,7 +74,6 @@ const AddTask = () => {
         setTaskSaved(!taskSaved);
         setSelectedDiscipline(undefined);
         setInputName("");
-        setIdUser(0);
     };
 
     // to set for post method and save the new task
@@ -168,25 +173,6 @@ const AddTask = () => {
                 </div>
             ) : (
                 <div>
-                    <div>
-                        <label htmlFor="id_choice">
-                            enter an id :
-                        </label>
-                        <input
-                            style={CSSConstants.inputGeneralSettings}
-                            type="number"
-                            id="id_choice"
-                            onChange={(event) => {
-                                setIdUser(Number(event.target.value));
-                            }}
-                        />
-                        <button onClick={() => {
-                            console.log("id : " + idUser);
-                        }}>
-                            ok
-                        </button>
-                    </div>
-
                     <div className="form-group">
                         <label htmlFor="name">Enter Name : </label>
                         <input
@@ -198,7 +184,7 @@ const AddTask = () => {
                             value={inputName}
                             onChange={(event) => {
                                 setInputName(event.target.value);
-                                getUserTask(id_user);
+                                getUserTask(Number(idUser));
                                 console.log("input name : " + inputName);
                             }}
                             name="name"
@@ -246,7 +232,7 @@ const AddTask = () => {
                         Submit
                     </button>
                     <a>
-                        <Link to={"/home"}>Return back</Link>
+                        <Link to={"/home/" + Number(idUser)}>Return back</Link>
                     </a>
                 </div>
             )}

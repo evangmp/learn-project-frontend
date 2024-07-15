@@ -1,12 +1,16 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import CSSConstants from "../components/CSSConstants.ts";
 import React, {ChangeEvent, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
+import Method from "../../services/Method.ts";
 
 const Connection = () => {
+    const navigate = useNavigate();
+
     const [message, setMessage] = useState<string>("");
+    const [idUser, setId] = useState<number>(null);
 
 
     // initialize the body to create the username/password variables
@@ -29,7 +33,7 @@ const Connection = () => {
     // post method to sign in a user
     const signInUser = () => {
         if (account.password === "" || account.username === "") {
-            console.error("e");
+            console.error("password or username empty");
             return;
         }
         const data = {
@@ -44,13 +48,15 @@ const Connection = () => {
                     email: account.email,
                     role: account.role,
                 });
-                console.log(response.data);
+                console.log(response.data.id);
                 setMessage("you");
+                setId(response.data.id);
+                navigate("/home/" + response.data.id);
 
             })
             .catch((e: Error) => {
                 console.log(e);
-                setMessage("error");
+                setMessage("Error, please retry");
 
             });
         }
@@ -101,13 +107,14 @@ const Connection = () => {
                     Cancel
                 </Link>
             </button>
-            <button onClick={signInUser}>
-                submit
-            </button>
+
             <button>
                 <Link to={"/connection/create"}>
                     Create an account
                 </Link>
+            </button>
+            <button onClick={signInUser}>
+                submit
             </button>
         </div>
     );

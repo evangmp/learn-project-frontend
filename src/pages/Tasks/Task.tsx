@@ -118,7 +118,7 @@ const Task = () => {
         TaskDataService.deleteTest(allTheTask, Number(idTask))
             .then((response: AxiosResponse) => {
                 console.log(response.data);
-                navigate("/home/");
+                navigate("/home/" + idUser);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -196,7 +196,7 @@ const Task = () => {
                 <p className="p-edit-1">{message}</p>
                 <div>
                     <button style={CSSConstants.buttonConnectionPageSettings}>
-                        <Link to={"/home/"}>
+                        <Link to={"/home/" + Number(idUser)}>
                             Cancel
                         </Link>
                     </button>

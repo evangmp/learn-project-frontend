@@ -23,7 +23,7 @@ const pagesData: routerType[] = [
         title: "createAccount"
     },
     {
-        path: "home",
+        path: "home/:idUser",
         element: <TasksHome/>,
         title:"task home",
     },
@@ -33,12 +33,12 @@ const pagesData: routerType[] = [
         title: "task parameters, updated, etc"
     },
     {
-        path: "home",
+        path: "home/:idUser",
         element: <Task/>,
         title: "for home",
     },
     {
-        path: "home/add",
+        path: "home/:idUser/add",
         element: <AddTask/>,
         title: "add task",
     },

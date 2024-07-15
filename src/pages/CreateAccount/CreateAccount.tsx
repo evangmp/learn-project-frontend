@@ -1,12 +1,15 @@
 import React, {ChangeEvent, useState} from "react";
 import CSSConstants from "../components/CSSConstants.ts"
 import IAccountData from "../../types/Account.ts";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
+import Method from "../../services/Method.ts";
 
 const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
+    const navigate = useNavigate();
+    const [idUser, setId] = useState<number>(null);
 
 
     // initialize the body to create the username/password variables
@@ -49,13 +52,20 @@ const CreateAccount = () => {
                     role: response.data.role,
                 });
                 console.log(response.data);
+                setId(response.data);
                 setMessage("working");
+                Method.AccountInitialisation(response.data);
             })
             .catch((e: Error) => {
-                setMessage("not working bro");
-                console.log(e);
+                setMessage("problem with the creation");
+                console.log("erreur");
+                return;
             });
-    }
+        // setId(Method.getIdByUsername(account.username));
+
+
+        navigate("/");
+    };
 
     return (
         <div>
@@ -126,9 +136,7 @@ const CreateAccount = () => {
                     </Link>
                 </button>
                 <button onClick={saveAccount}>
-                    <Link to={"/home"}>
-                        submit
-                    </Link>
+                    submit
                 </button>
             </div>
         </div>
