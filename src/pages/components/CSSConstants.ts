@@ -1,4 +1,5 @@
 import {CSSProperties} from "react";
+import {Simulate} from "react-dom/test-utils";
 
 const buttonGeneralSettings: CSSProperties = {
     appearance: "none",
@@ -74,11 +75,40 @@ const buttonMainPageSettings: CSSProperties = {
     margin: "4px",
 };
 
+const buttonTest: CSSProperties = {
+    appearance: "none",
+    backgroundColor: "transparent",
+    border: "2px solid #1A1A1A",
+    borderRadius: "15px",
+    boxSizing: "border-box",
+    color: "#3B3B3B",
+    cursor: "pointer",
+    display: "inline-block",
+    fontFamily: 'Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+    fontSize: "16px",
+    fontWeight: "600",
+    lineHeight: "normal",
+    margin: "0",
+    minHeight: "30px",
+    minWidth: "0",
+    outline: "none",
+    padding: "4px 6px",
+    textAlign: "center",
+    textDecoration: "none",
+    transition: "all 300ms cubic-bezier(.23, 1, 0.32, 1)",
+    userSelect: "none",
+    WebkitUserSelect: "none",
+    touchAction: "manipulation",
+    width: "30%",
+    willChange: "transform",
+};
+
 const CSSConstants = {
     buttonGeneralSettings,
     inputGeneralSettings,
     buttonConnectionPageSettings,
     buttonMainPageSettings,
+    buttonTest,
 };
 
 export default CSSConstants;

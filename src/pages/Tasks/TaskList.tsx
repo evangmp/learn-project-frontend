@@ -1,16 +1,17 @@
 import React, {CSSProperties, useEffect, useState} from "react";
 import {ITaskData, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
-import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
 import Method from "../../services/Method.ts";
 import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
+import CSSConstants from "../components/CSSConstants.ts";
 
 const TaskList = () => {
     const { idUser}= useParams();
 
+    const navigate = useNavigate();
 
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
     const [currentIndex, setCurrentIndex] = useState<number>(-1);
@@ -68,7 +69,7 @@ const TaskList = () => {
         TaskDataService.deleteTest(allTheTasks, Number(idTask))
             .then((response: AxiosResponse) => {
                 console.log(response.data);
-                //navigate("/home/" + idUser);
+                navigate("/home/" + idUser);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -120,6 +121,11 @@ const TaskList = () => {
         flex: "0 0 100%",
     };
 
+    const CSSInput: CSSProperties = {
+        display: "none",
+    };
+
+
     return (
         <div className="list row">
             <div className="col-md-6">
@@ -133,35 +139,45 @@ const TaskList = () => {
                                     key={task.id}
                                     hidden={!hiddenOrNo(task)}
                                 >
-                                    <div style={divTaskSetting}>
-                                        <input
-                                            type="checkbox"
-                                            defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
-                                            onChange={() => {
-                                                task.taskAchievement = achievementUpdate(task);
-                                            }}
+                                    <div className="checkbox-wrapper-15">
+                                        <input className="inp-cbx" id="cbx-15" type="checkbox" style={CSSInput}
+                                               defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
+                                               onChange={() => {
+                                                   task.taskAchievement = achievementUpdate(task);
+                                               }}
                                         />
-                                        <label style={CSSConstants.inputGeneralSettings}>{task.taskName}</label>
+                                        <label className="cbx" htmlFor="cbx-15">
+                                            <div>
+                                                <span>
+                                                    <svg width="12px" height="9px" viewBox="0 0 12 9">
+                                                    <polyline points="1 5 4 8 11 1"></polyline>
+                                                    </svg>
+                                                    </span>
+                                                <span>{task.taskName}</span>
+                                            </div>
+                                            <div>
+                                                <span style={CSSInput}>
+                                                    <svg width="12px" height="9px" viewBox="0 0 12 9">
+                                                    </svg>
+                                                </span>
+                                                <span>Discipline : {task.taskDiscipline}</span>
+                                            </div>
+                                        </label>
                                     </div>
 
                                     <div style={divTaskSetting}>
-                                        <label>Discipline : {task.taskDiscipline}</label>
-                                    </div>
-
-                                    <div style={divTaskSetting}>
-                                        <Link
-                                            to={"/home/" + idUser + "/" + task.id}
-                                            className="nav-link-edit"
-                                            variant="body2"
-                                            underline="hover"
+                                        <button className="button-28"
+                                                onClick={() => navigate("/home/" + idUser + "/" + task.id)}
+                                                style={CSSConstants.buttonTest}
                                         >
                                             Edit
-                                        </Link>
-                                        <a onClick={() => deleteTutorial(task.id)}>
-                                            <Link to={"/home/" + idUser}>
+                                        </button>
+                                        <button onClick={() => deleteTutorial(task.id)}
+                                                className="button-28"
+                                                style={CSSConstants.buttonTest}
+                                        >
                                                 Delete
-                                            </Link>
-                                        </a>
+                                        </button>
                                     </div>
                                 </li>
                             </div>
