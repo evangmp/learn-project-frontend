@@ -74,8 +74,6 @@ const buttonMainPageSettings: CSSProperties = {
     margin: "4px",
 };
 
-
-
 const CSSConstants = {
     buttonGeneralSettings,
     inputGeneralSettings,

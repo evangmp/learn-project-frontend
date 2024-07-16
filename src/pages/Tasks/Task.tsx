@@ -14,7 +14,7 @@ const Task = () => {
     const [inputName, setInputName] = useState<string>("");
 
     // to save all the tasks associate with the user id (and then update or delete a task)
-    const [allTheTask, setAllTheTasks] = useState<ITaskData>(null);
+    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
     const nameTasks: Map<number, string> = new Map();
     const disciplineTasks: Map<number, Discipline> = new Map();
     const achievementTasks: Map<number, [number, number, number, number, number, number, number, number, number, number]> = new Map();
@@ -64,22 +64,22 @@ const Task = () => {
 
         // have the number of tasks
         let i: number = 0;
-        while(allTheTask.taskName[i] !== undefined) {i++;}
+        while(allTheTasks.taskName[i] !== undefined) {i++;}
 
         // to set Map, with new data for the task which is update and same data for other task
         let p: number = 0;
-        while(allTheTask.taskName[p] !== undefined) {
+        while(allTheTasks.taskName[p] !== undefined) {
             if(p == idTask) {
                 nameTasks.set(Number(p), inputName);
                 disciplineTasks.set(Number(p), selectedDiscipline);
-                achievementTasks.set(Number(p), allTheTask.taskAchievement[p]);
-                dateTasks.set(Number(p), allTheTask.taskDate[p]);
+                achievementTasks.set(Number(p), allTheTasks.taskAchievement[p]);
+                dateTasks.set(Number(p), allTheTasks.taskDate[p]);
             }
             else {
-                nameTasks.set(Number(p), allTheTask.taskName[p]);
-                disciplineTasks.set(Number(p), allTheTask.taskDiscipline[p]);
-                achievementTasks.set(Number(p), allTheTask.taskAchievement[p]);
-                dateTasks.set(Number(p), allTheTask.taskDate[p]);
+                nameTasks.set(Number(p), allTheTasks.taskName[p]);
+                disciplineTasks.set(Number(p), allTheTasks.taskDiscipline[p]);
+                achievementTasks.set(Number(p), allTheTasks.taskAchievement[p]);
+                dateTasks.set(Number(p), allTheTasks.taskDate[p]);
             }
             console.log(nameTasks.get(p));
             p++
@@ -115,7 +115,7 @@ const Task = () => {
     };
 
     const deleteTutorial = () => {
-        TaskDataService.deleteTest(allTheTask, Number(idTask))
+        TaskDataService.deleteTest(allTheTasks, Number(idTask))
             .then((response: AxiosResponse) => {
                 console.log(response.data);
                 navigate("/home/" + idUser);

@@ -11,6 +11,7 @@ import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
 const TaskList = () => {
     const { idUser}= useParams();
 
+
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
     const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
@@ -56,6 +57,18 @@ const TaskList = () => {
                     taskAchievement: response.data.taskAchievement,
                     taskDate: response.data.taskDate,
                 })
+            })
+            .catch((e: Error) => {
+                console.log(e);
+            });
+    };
+
+    // delete tutorial
+    const deleteTutorial = (idTask: number | undefined) => {
+        TaskDataService.deleteTest(allTheTasks, Number(idTask))
+            .then((response: AxiosResponse) => {
+                console.log(response.data);
+                //navigate("/home/" + idUser);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -136,14 +149,19 @@ const TaskList = () => {
                                     </div>
 
                                     <div style={divTaskSetting}>
-                                        <button /*style={CSSConstants.buttonMainPageSettings}*/>
-                                            <Link
-                                                to={"/home/" + idUser + "/" + task.id}
-                                                className="nav-link-edit"
-                                            >
-                                                Edit
+                                        <Link
+                                            to={"/home/" + idUser + "/" + task.id}
+                                            className="nav-link-edit"
+                                            variant="body2"
+                                            underline="hover"
+                                        >
+                                            Edit
+                                        </Link>
+                                        <a onClick={() => deleteTutorial(task.id)}>
+                                            <Link to={"/home/" + idUser}>
+                                                Delete
                                             </Link>
-                                        </button>
+                                        </a>
                                     </div>
                                 </li>
                             </div>
