@@ -2,12 +2,13 @@ import React, {useEffect, useState} from "react";
 import {ITaskData, Discipline} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import SecurityService from "../../services/AuthentificationService.ts";
 
 const AddTask = () => {
     const { idUser}= useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(idUser)
@@ -118,17 +119,6 @@ const AddTask = () => {
             console.log(i + " : " + nameTasks.get(i));
             i++;
         }
-/*
-        let o = 0;
-        while(allTheTasks.taskName[o] !== undefined) {
-            nameTasks.set(o, allTheTasks.taskName[o]);
-            disciplineTasks.set(o, allTheTasks.taskDiscipline[o]);
-            achievementTasks.set(o, allTheTasks.taskAchievement[o]);
-            dateTasks.set(o, allTheTasks.taskDate[o]);
-            console.log(o + " : " + nameTasks.get(o));
-            o++;
-        }
- */
 
         // when called, add at the of each lists the new values
         nameTasks.set(i, inputName);
@@ -156,7 +146,9 @@ const AddTask = () => {
         postMethod(nouveaulasuite);
     };
 
-
+    const navigationButton = (link: string) => {
+        navigate(link);
+    };
 
     return (
         <div className="submit-form">
@@ -225,15 +217,18 @@ const AddTask = () => {
                         <label htmlFor="math-checkbox">Mathematics</label>
                     </div>
                     <button
-                        style={CSSConstants.buttonGeneralSettings}
+                        style={CSSConstants.buttonMainPageSettings}
                         onClick={submitTask}
                         className="btn btn-success"
                     >
                         Submit
                     </button>
-                    <a>
-                        <Link to={"/home/" + Number(idUser)}>Return back</Link>
-                    </a>
+                        <button
+                            style={CSSConstants.buttonMainPageSettings}
+                            onClick={() => navigationButton("/home/" + Number(idUser))}
+                        >
+                            Return back
+                        </button>
                 </div>
             )}
         </div>

@@ -125,6 +125,10 @@ const Task = () => {
             });
     };
 
+    const navigationButton = (link: string) => {
+        navigate(link);
+    };
+
     return (
         <div className="taskApp large-container-2">
             <div className="container-edit-form-1">
@@ -195,7 +199,10 @@ const Task = () => {
                 </button>
                 <p className="p-edit-1">{message}</p>
                 <div>
-                    <button style={CSSConstants.buttonConnectionPageSettings}>
+                    <button
+                        style={CSSConstants.buttonConnectionPageSettings}
+
+                    >
                         <Link to={"/home/" + Number(idUser)}>
                             Cancel
                         </Link>

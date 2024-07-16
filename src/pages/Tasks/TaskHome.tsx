@@ -1,11 +1,13 @@
 import CSSConstants from "../components/CSSConstants.ts";
-import {Link, Route, Routes, useParams} from "react-router-dom";
+import {Link, Route, Routes, useNavigate, useParams} from "react-router-dom";
 import React, {CSSProperties, useEffect, useState} from "react";
 import TasksList from "./TaskList.tsx";
 import Task from "./Task.tsx";
 
 const TasksHome = () => {
     const { idUser}= useParams();
+
+    const navigate = useNavigate();
 
     useEffect(() => { // voir comment ça fonctionne
     }, [idUser]);
@@ -15,18 +17,25 @@ const TasksHome = () => {
         padding: '2rem',
     };
 
+    const navigationButton = (link: string) => {
+        navigate(link);
+    };
+
     return (
         <div>
             <nav className="navbar-main" style={buttonDiv}>
-                <button style={CSSConstants.buttonMainPageSettings} className="choice-button">
-                    <Link to={"/"} className="navbar-brand">
-                        Log out
-                    </Link>
+                <button
+                    style={CSSConstants.buttonMainPageSettings}
+                    className="choice-button"
+                    onClick={() => navigationButton("/")}
+                >
+                    Log out
                 </button>
-                <button style={CSSConstants.buttonMainPageSettings} className="choice-button">
-                    <Link to={"/home/" + idUser + "/add"} className="nav-link-add">
-                        Add
-                    </Link>
+                <button style={CSSConstants.buttonMainPageSettings}
+                        className="choice-button"
+                        onClick={() => navigationButton("/home/" + idUser + "/add")}
+                >
+                    Add
                 </button>
             </nav>
             <div>
