@@ -31,7 +31,7 @@ const TaskList = () => {
 
 
     // get method to bring all the tasks from the DB
-    const getTask = (idUser: number) => {
+    const getTask = (idUser: number) => { // idUser "bonjour"
         TaskDataService.getUserData(idUser)
             .then((response: AxiosResponse) => {
                 if(response.data.taskName[0] == undefined) {
@@ -58,9 +58,11 @@ const TaskList = () => {
                     taskAchievement: response.data.taskAchievement,
                     taskDate: response.data.taskDate,
                 })
+
             })
             .catch((e: Error) => {
-                console.log(e);
+                console.log(e.message);
+                console.log(e.stack);
             });
     };
 

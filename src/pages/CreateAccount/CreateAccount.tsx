@@ -58,7 +58,7 @@ const CreateAccount = () => {
             })
             .catch((e: Error) => {
                 setMessage("problem with the creation");
-                console.log("erreur");
+                console.log(e);
                 return;
             });
         // setId(Method.getIdByUsername(account.username));
