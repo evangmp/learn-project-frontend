@@ -2,7 +2,7 @@ import React, {CSSProperties, useEffect, useState} from "react";
 import {ITaskData, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
 import Method from "../../services/Method.ts";
 import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
@@ -12,6 +12,9 @@ const TaskList = () => {
     const { idUser}= useParams();
 
     const navigate = useNavigate();
+
+    // to refresh the list when a task is deleted
+    const [refreshList, setRefreshList] = useState<boolean>(false);
 
     // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
     const [currentIndex, setCurrentIndex] = useState<number>(-1);
@@ -27,7 +30,10 @@ const TaskList = () => {
         setDate(new Date());
         if(idUser)
             getTask(Number(idUser));
-    }, [idUser]);
+        if(refreshList)
+            setRefreshList(false);
+            return;
+    }, [idUser, refreshList]);
 
 
     // get method to bring all the tasks from the DB
@@ -72,6 +78,7 @@ const TaskList = () => {
             .then((response: AxiosResponse) => {
                 console.log(response.data);
                 navigate("/home/" + idUser);
+                setRefreshList(true);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -92,14 +99,14 @@ const TaskList = () => {
         const state: boolean = SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
         console.log("state task boolean : " + state);
         return state;
-    }
+    };
 
     // update achievement file
     const achievementUpdate = (task: Task) => {
         const state: number[] = SetAchievement.taskSetAchievement(task.taskDate, task.taskAchievement);
         Method.updateTask(task.taskName, task.taskDiscipline, state, allTheTasks, Number(idUser), Number(task.id));
         return state;
-    }
+    };
 
     // CSS Style
     const tasksListTitle: CSSProperties = {
