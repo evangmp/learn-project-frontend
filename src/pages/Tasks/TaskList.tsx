@@ -149,13 +149,13 @@ const TaskList = () => {
                                     hidden={!hiddenOrNo(task)}
                                 >
                                     <div className="checkbox-wrapper-15">
-                                        <input className="inp-cbx" id="cbx-15" type="checkbox" style={CSSInput}
+                                        <input className="inp-cbx" id={"cbx-15" + task.id} type="checkbox" style={CSSInput}
                                                defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
                                                onChange={() => {
                                                    task.taskAchievement = achievementUpdate(task);
                                                }}
                                         />
-                                        <label className="cbx" htmlFor="cbx-15">
+                                        <label className="cbx" htmlFor={"cbx-15" + task.id}>
                                             <div>
                                                 <span>
                                                     <svg width="12px" height="9px" viewBox="0 0 12 9">

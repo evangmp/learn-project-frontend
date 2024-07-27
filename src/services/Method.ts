@@ -55,7 +55,7 @@ const updateTask = (name: string, discipline: Discipline, achievement: number[],
 
     TaskDataService.updateTask(taskToSend)
         .then((response: AxiosResponse) => {
-            console.debug(response);
+            // console.debug(response);
         })
         .catch((e: Error) => {
             console.log(e);
@@ -93,7 +93,7 @@ const AccountInitialisation = (id: number) => {
         id: id,
         taskName: {0: "exemple Task"},
         taskDate: {0: new Date().toLocaleString()},
-        taskAchievement: {0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+        taskAchievement: {0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
         taskDiscipline: {0: "mathematics"},
     };
 
