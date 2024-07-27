@@ -1,14 +1,22 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import CSSConstants from "../components/CSSConstants.ts"
 import IAccountData from "../../types/Account.ts";
 import {Link, useNavigate} from "react-router-dom";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import Method from "../../services/Method.ts";
+import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(CookiesConfiguration.getCookie("login"))
+            navigate("/home/" + cookiesConfiguration.getCookie("login"));
+    }, [navigate]);
+
     const [idUser, setId] = useState<number>(null);
 
 

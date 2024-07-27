@@ -1,15 +1,21 @@
 import {Link, useNavigate} from "react-router-dom";
 import CSSConstants from "../components/CSSConstants.ts";
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
+import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const Connection = () => {
     const navigate = useNavigate();
 
-    const [message, setMessage] = useState<string>("");
+    useEffect(() => {
+        if(CookiesConfiguration.getCookie("login"))
+            navigate("/home/" + cookiesConfiguration.getCookie("login"));
+    }, [navigate]);
 
+    const [message, setMessage] = useState<string>("");
 
     // initialize the body to create the username/password variables
     const initialAccountState = {
@@ -28,7 +34,7 @@ const Connection = () => {
         setAccount({ ...account, [name]: value });
     };
 
-    // post method to sign in a user
+    // post method to sign in a user and set token in DB
     const signInUser = () => {
         if (account.password === "" || account.username === "") {
             console.error("password or username empty");
@@ -46,8 +52,13 @@ const Connection = () => {
                     email: account.email,
                     role: account.role,
                 });
-                console.log(response.data.id);
-                setMessage("you");
+                console.log(response.data);
+
+                // set log in cookie
+                CookiesConfiguration.setCookie("login", response.data.id, 7);
+                CookiesConfiguration.setCookie(response.data.id, response.data.accessToken, 7);
+
+                // navigate to home user
                 navigate("/home/" + response.data.id);
 
             })
@@ -62,6 +73,14 @@ const Connection = () => {
         <div>
             <div>
                 Connection Part
+            </div>
+
+            <div>
+                <button>
+                    <Link to={"/connection/create"}>
+                        Create an account
+                    </Link>
+                </button>
             </div>
 
             <div>
@@ -105,11 +124,6 @@ const Connection = () => {
                 </Link>
             </button>
 
-            <button>
-                <Link to={"/connection/create"}>
-                    Create an account
-                </Link>
-            </button>
             <button onClick={signInUser}>
                 submit
             </button>

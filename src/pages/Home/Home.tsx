@@ -1,13 +1,21 @@
 import CSSConstants from "../components/CSSConstants.ts";
-import React, {CSSProperties} from "react";
-import {Link} from "react-router-dom";
+import React, {CSSProperties, useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(CookiesConfiguration.getCookie("login"))
+            navigate("/home/" + cookiesConfiguration.getCookie("login"));
+    }, [navigate]);
+
     // CSS properties
     const buttonDiv: CSSProperties = {
         padding: '2rem',
     };
-
 
     return (
         <div>

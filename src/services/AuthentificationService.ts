@@ -3,8 +3,6 @@ import IAccountData from "../types/account.ts";
 import ISignInData from "../types/signIn.ts";
 import {ITaskData} from "../types/task.ts";
 
-// different method with the security backend
-
 const signUp = (data: IAccountData) => {
     return http.post<IAccountData>("/auth/signup", data);
 }
@@ -37,6 +35,10 @@ const updateTask = (data: any) => {
     return http.post<ITaskData>("auth/update", data);
 }
 
+const deleteToken = (id: number) => {
+    return http.post<ITaskData>("/auth/deletetoken", id);
+}
+
 const SecurityService = {
     signUp,
     signIn,
@@ -46,6 +48,7 @@ const SecurityService = {
     deleteTest,
     updateTask,
     getIdByUsername,
+    deleteToken,
 };
 
 export default SecurityService;

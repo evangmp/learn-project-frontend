@@ -5,6 +5,7 @@ import CreateAccount from "./CreateAccount/CreateAccount.tsx";
 import TasksHome from "./Tasks/TaskHome.tsx";
 import AddTask from "./Tasks/AddTask.tsx";
 import Task from "./Tasks/Task.tsx";
+import Error from "./Connection/Error.tsx";
 
 const pagesData: routerType[] = [
     {
@@ -41,6 +42,11 @@ const pagesData: routerType[] = [
         path: "home/:idUser/add",
         element: <AddTask/>,
         title: "add task",
+    },
+    {
+        path: "/error",
+        element: <Error/>,
+        title: "error connection",
     },
 ];
 
