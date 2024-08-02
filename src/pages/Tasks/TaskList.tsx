@@ -1,54 +1,58 @@
-import React, {CSSProperties, useEffect, useState} from "react";
-import {ITaskData, Task} from "../../types/Task.ts";
+import React, {useEffect, useState} from "react";
+import {ListTask, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
-import Method from "../../services/Method.ts";
-import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
 import CSSConstants from "../components/CSSConstants.ts";
+import Filters from "../Filters/Filters.tsx";
+import ListSort from "../Filters/ListSort.ts";
+import CSSTaskList from "../components/CSSTaskList.ts";
 
 const TaskList = () => {
     const { idUser}= useParams();
-
     const navigate = useNavigate();
 
     // to refresh the list when a task is deleted
     const [refreshList, setRefreshList] = useState<boolean>(false);
 
-    // i will see, error in console, because each child of the list don't have a unique key, so it'll be useful
-    const [currentIndex, setCurrentIndex] = useState<number>(-1);
+    // form ready to be sent to DB
+    const [allTheTasks, setAllTheTasks] = useState<ListTask>(null);
 
-    // to set date and send it to the DateAlgo
-    const [date, setDate] = useState<Date>(new Date());
-
+    // to map and print tasks
     const [listTasks, setListTasks] = useState<Array<Task>>(null);
-    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
+    const [listAllTheTasks, setListAllTheTasks] = useState<Array<Task>>(null);
+
+    // filter button setting
+    const [timeFilter, setTimeFilter] = useState<string>("All");
+    const [disciplineFilter, setDisciplineFilter] = useState<string>("None");
 
     // when its run call the const to have all the tasks and setDate (if not date is null)
     useEffect(() => {
-        setDate(new Date());
         if(idUser)
             getTask(Number(idUser));
         if(refreshList)
             setRefreshList(false);
+            setTimeFilter("All");
+            setDisciplineFilter("None");
             return;
     }, [idUser, refreshList]);
-
 
     // get method to bring all the tasks from the DB
     const getTask = (idUser: number) => { // idUser "bonjour"
         TaskDataService.getUserData(idUser)
             .then((response: AxiosResponse) => {
+                console.log(response);
                 if(response.data.taskName[0] == undefined) {
                     setListTasks(null);
                     return;
                 }
+
                 let i: number = 0;
-                const test: Array<Task> = [];
+                const initializationTaskList: Array<Task> = [];
                 while (response.data.taskName[i] !== undefined) {
-                    test.push({
-                        id: i,
+                    initializationTaskList.push({
+                        id: idUser,
                         taskName: response.data.taskName[i],
                         taskDiscipline: response.data.taskDiscipline[i],
                         taskAchievement: response.data.taskAchievement[i],
@@ -56,15 +60,17 @@ const TaskList = () => {
                     });
                     i++;
                 }
-                setListTasks(test);
+
+                setListAllTheTasks(initializationTaskList);
+                setListTasks(ListSort.allTheTasksToShow(initializationTaskList));
+
                 setAllTheTasks({
                     id: idUser,
                     taskName: response.data.taskName,
                     taskDiscipline: response.data.taskDiscipline,
                     taskAchievement: response.data.taskAchievement,
                     taskDate: response.data.taskDate,
-                })
-
+                });
             })
             .catch((e: Error) => {
                 console.log(e.message);
@@ -72,90 +78,90 @@ const TaskList = () => {
             });
     };
 
-    // delete tutorial
-    const deleteTutorial = (idTask: number | undefined) => {
-        TaskDataService.deleteTest(allTheTasks, Number(idTask))
-            .then((response: AxiosResponse) => {
-                console.log(response.data);
-                navigate("/home/" + idUser);
-                setRefreshList(true);
-            })
-            .catch((e: Error) => {
-                console.log(e);
-            });
-    };
-
-    // useful to set if the task needs to be print, with DateAlgo
-    const hiddenOrNo = (task: Task) => {
-        // will call another const, this one will compare the date of the task and the actual date,
-        // to render if the task will be print or no with a boolean
-        const printOrNo = SetShowTaskOrNo.SetShowTaskOrNo(task, date);
-        console.log("Task : " + task.taskName + ", is good or no : " + printOrNo);
-        return printOrNo;
-    };
-
     // set default checked or no
     const defaultChecked = (taskDate: string, taskAchievement: number[]) => {
-        const state: boolean = SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
-        console.log("state task boolean : " + state);
-        return state;
+        return SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
     };
 
-    // update achievement file
-    const achievementUpdate = (task: Task) => {
-        const state: number[] = SetAchievement.taskSetAchievement(task.taskDate, task.taskAchievement);
-        Method.updateTask(task.taskName, task.taskDiscipline, state, allTheTasks, Number(idUser), Number(task.id));
-        return state;
+    const serviceTaskList = (taskToSend: ListTask, method: string) => {
+        TaskDataService.updateTask(taskToSend)
+            .then((response: AxiosResponse) => {
+                console.debug(response.data.taskAchievement);
+                if(method == "delete") {
+                    setRefreshList(true);
+                    navigate("/home/" + idUser);
+                }
+            })
+            .catch((e: Error) => {
+                console.log("erreur");
+                console.log(e);
+            });
+    }
+
+    const deleteTask = (task: Task) => {
+        serviceTaskList(ListSort.deleteTask(listAllTheTasks, task.taskName, task.taskDate, Number(idUser), setAllTheTasks, setListTasks, setListAllTheTasks), "delete");
     };
 
-    // CSS Style
-    const tasksListTitle: CSSProperties = {
-        font: '3.5rem "Fira Sans", sans-serif', // "small-caps bold 24px/1 sans-serif",
-    };
-    const listGeneralSettings: CSSProperties = {
-        listStyleType: "none",
-    };
-    const divTaskSetting: CSSProperties = {
-        WebkitFontSmoothing: "antialiasing",
-        boxSizing: "border-box",
-        clear: "left",
-        display: "block",
-        fontFamily: "Arial, sans-serif",
-        fontSize: "1.6rem",
-        fontWeight: 400,
-        lineHeight: 1.25,
-        minHeight: "44px",
-        paddingLeft: "40px",
-        position: "relative",
-        flex: "0 0 100%",
+    const updateTask = (task: Task) => {
+        ListSort.updateTask(listAllTheTasks, listTasks, task, setAllTheTasks, setListTasks, setListAllTheTasks);
+        serviceTaskList(allTheTasks, "");
     };
 
-    const CSSInput: CSSProperties = {
-        display: "none",
+    const updateFilter = (typeFilter: string) => {
+        setTimeFilter(typeFilter);
+
+        const sortedList: Task[] = ListSort.timeTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
+        setListTasks(sortedList);
     };
 
+    const disciplineUpdateFilter = (discipline: string) => {
+        ListSort.disciplineTask(listAllTheTasks, setListTasks, discipline, timeFilter);
+        //console.log(listTasks);
+    };
+
+    const AllFilter: JSX.Element = Filters.defaultFilter(timeFilter, "All", setTimeFilter, updateFilter);
+    const ActiveFilter: JSX.Element = Filters.defaultFilter(timeFilter, "Active", setTimeFilter, updateFilter);
+    const CompletedFilter: JSX.Element = Filters.defaultFilter(timeFilter, "Completed", setTimeFilter, updateFilter);
+
+    const NoneDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "None", setDisciplineFilter, disciplineUpdateFilter);
+    const MathematicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "mathematics", setDisciplineFilter, disciplineUpdateFilter);
+    const PhysicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "physics", setDisciplineFilter, disciplineUpdateFilter);
 
     return (
         <div className="list row">
             <div className="col-md-6">
-                <h4 style={tasksListTitle}>Tasks List</h4>
+                <h4 style={CSSTaskList.tasksListTitle}>Tasks List</h4>
+
+                <h5>Filters</h5>
+
+                <div>
+                    {AllFilter}
+                    {ActiveFilter}
+                    {CompletedFilter}
+                </div>
+
+                <div>
+                    {NoneDisciplineFilter}
+                    {MathematicsDisciplineFilter}
+                    {PhysicsDisciplineFilter}
+                </div>
 
                 <ul className="list-group">
-                    {listTasks && listTasks.map((task: Task, index: number) => (
+                    {listTasks && listTasks.map((task: Task) => (
                             <div style={{padding: '2rem'}}>
-                                <li style={listGeneralSettings}
-                                    className={"list-group-item " + (index === currentIndex ? "active" : "")}
-                                    key={task.id}
-                                    hidden={!hiddenOrNo(task)}
+                                <li style={CSSTaskList.listGeneralSettings}
+                                    className={"list-group-item " + task.taskDate}
+                                    key={task.taskDate}
                                 >
                                     <div className="checkbox-wrapper-15">
-                                        <input className="inp-cbx" id={"cbx-15" + task.id} type="checkbox" style={CSSInput}
+                                        <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSTaskList.CSSInput}
                                                defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
                                                onChange={() => {
-                                                   task.taskAchievement = achievementUpdate(task);
+                                                   updateTask(task);
+                                                   //task.taskAchievement = achievementUpdate(task);
                                                }}
                                         />
-                                        <label className="cbx" htmlFor={"cbx-15" + task.id}>
+                                        <label className="cbx" htmlFor={"cbx-15" + task.taskDate}>
                                             <div>
                                                 <span>
                                                     <svg width="12px" height="9px" viewBox="0 0 12 9">
@@ -165,7 +171,7 @@ const TaskList = () => {
                                                 <span>{task.taskName}</span>
                                             </div>
                                             <div>
-                                                <span style={CSSInput}>
+                                                <span style={CSSTaskList.CSSInput}>
                                                     <svg width="12px" height="9px" viewBox="0 0 12 9">
                                                     </svg>
                                                 </span>
@@ -174,14 +180,14 @@ const TaskList = () => {
                                         </label>
                                     </div>
 
-                                    <div style={divTaskSetting}>
+                                    <div style={CSSTaskList.divTaskSetting}>
                                         <button className="button-28"
                                                 onClick={() => navigate("/home/" + idUser + "/" + task.id)}
                                                 style={CSSConstants.buttonTest}
                                         >
                                             Edit
                                         </button>
-                                        <button onClick={() => deleteTutorial(task.id)}
+                                        <button onClick={() => deleteTask(task)}
                                                 className="button-28"
                                                 style={CSSConstants.buttonTest}
                                         >

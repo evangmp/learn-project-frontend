@@ -34,7 +34,7 @@ const AddTask = () => {
     const postMethod = (taskToSend: ITaskData) => {
         TaskDataService.createUserTask(taskToSend)
             .then((response: AxiosResponse) => {
-                console.debug(response);
+                //console.debug(response);
                 resetInputs();
             })
             .catch((e: Error) => {
@@ -64,7 +64,7 @@ const AddTask = () => {
                 else {
                     setFirstTask(false);
                 }
-                console.log("firstTask ? " + firstTask);
+                //console.log("firstTask ? " + firstTask);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -177,7 +177,7 @@ const AddTask = () => {
                             onChange={(event) => {
                                 setInputName(event.target.value);
                                 getUserTask(Number(idUser));
-                                console.log("input name : " + inputName);
+                                //console.log("input name : " + inputName);
                             }}
                             name="name"
                         />

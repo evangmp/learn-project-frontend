@@ -37,7 +37,7 @@ const Task = () => {
                     taskDiscipline: response.data.taskDiscipline,
                     taskAchievement: response.data.taskAchievement,
                 });
-                console.log(response.data);
+                //console.log(response.data);
             })
             .catch((e: Error) => {
                 console.log("get fnctionne pas");
@@ -100,13 +100,13 @@ const Task = () => {
             taskToSend.taskDiscipline[q.toString()] = disciplineTasks.get(q);
             taskToSend.taskAchievement[q.toString()] = achievementTasks.get(q);
             taskToSend.taskDate[q.toString()] = dateTasks.get(q);
-            console.log(q + " + " + nameTasks.get(q));
+            // console.log(q + " + " + nameTasks.get(q));
             q++;
         }
 
         TaskDataService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
-                console.debug(response);
+                //console.debug(response);
                 setMessage("The tutorial was updated successfully!");
             })
             .catch((e: Error) => {
@@ -117,16 +117,12 @@ const Task = () => {
     const deleteTutorial = () => {
         TaskDataService.deleteTest(allTheTasks, Number(idTask))
             .then((response: AxiosResponse) => {
-                console.log(response.data);
+                //console.log(response.data);
                 navigate("/home/" + idUser);
             })
             .catch((e: Error) => {
                 console.log(e);
             });
-    };
-
-    const navigationButton = (link: string) => {
-        navigate(link);
     };
 
     return (

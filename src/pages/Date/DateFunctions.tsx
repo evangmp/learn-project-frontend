@@ -48,11 +48,11 @@ const switchToLenghtYear = (numberDay: number, numberMonth: number, leapYear: nu
         case 9:
             return (numberDay + 243 + leapYear); // september (30)
         case 10:
-            return (numberDay + 273+ leapYear); // october (31)
+            return (numberDay + 273 + leapYear); // october (31)
         case 11:
-            return (numberDay + 304+ leapYear); // november (30)
+            return (numberDay + 304 + leapYear); // november (30)
         case 12:
-            return (numberDay + 334+ leapYear); // december (31)
+            return (numberDay + 334 + leapYear); // december (31)
     }
 };
 

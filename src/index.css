@@ -171,7 +171,7 @@ a:active {text-decoration: underline; color:black;}
 }
 /* fin */
 
-/* button edit / delete */
+/* button edit/delete */
 .button-81:hover {
   background-color: #1e293b;
   color: #fff;
@@ -199,6 +199,32 @@ a:active {text-decoration: underline; color:black;}
   box-shadow: none;
   transform: translateY(0);
 }
+/* fin */
+
+/* button filters */
+.btn {
+  border: 0.2rem solid #4d4d4d;
+  cursor: pointer;
+  padding: 0.8rem 1rem 0.7rem;
+  text-transform: capitalize;
+}
+.btn.filter {
+  border-color: #d3d3d3;
+  border-width: 1px;
+}
+.btn.filter[aria-pressed="true"] {
+  border-color: #4d4d4d;
+  text-decoration: underline;
+}
+.btn__danger {
+  background-color: #ca3c3c;
+  border-color: #bd2130;
+  color: #fff;
+}
+.btn__filter {
+  border-color: lightgrey;
+}
+
 /* fin */
 
 

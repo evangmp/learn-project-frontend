@@ -17,9 +17,6 @@ const CreateAccount = () => {
             navigate("/home/" + cookiesConfiguration.getCookie("login"));
     }, [navigate]);
 
-    const [idUser, setId] = useState<number>(null);
-
-
     // initialize the body to create the username/password variables
     const initialAccountState = {
         username: "",
@@ -60,7 +57,6 @@ const CreateAccount = () => {
                     role: response.data.role,
                 });
                 console.log(response.data);
-                setId(response.data);
                 setMessage("working");
                 Method.AccountInitialisation(response.data);
             })
@@ -69,9 +65,6 @@ const CreateAccount = () => {
                 console.log(e);
                 return;
             });
-        // setId(Method.getIdByUsername(account.username));
-
-
         navigate("/");
     };
 

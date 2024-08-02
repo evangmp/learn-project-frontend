@@ -10,6 +10,15 @@ export interface ITaskData {
     taskDate: Map<number, string>,
 }
 
+export interface ListTask {
+    id?: number,
+    taskName: {0: string},
+    taskDiscipline: {0: Discipline},
+    taskAchievement: {0: AchievementTable},
+    taskDate: {0: string},
+
+}
+
 export interface Task {
     id?: number,
     taskName: string,
