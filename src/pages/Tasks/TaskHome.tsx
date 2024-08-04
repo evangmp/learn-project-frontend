@@ -1,4 +1,3 @@
-import CSSConstants from "../components/CSSConstants.ts";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import React, {CSSProperties, useEffect} from "react";
 import TasksList from "./TaskList.tsx";
@@ -6,6 +5,7 @@ import Task from "./Task.tsx";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const TasksHome = () => {
     const { idUser}= useParams();
@@ -48,13 +48,13 @@ const TasksHome = () => {
         <div>
             <nav className="navbar-main" style={buttonDiv}>
                 <button
-                    style={CSSConstants.buttonMainPageSettings}
+                    style={CSSButton.buttonMainPageSettings}
                     className="choice-button"
                     onClick={logOut}
                 >
                     Log out
                 </button>
-                <button style={CSSConstants.buttonMainPageSettings}
+                <button style={CSSButton.buttonMainPageSettings}
                         className="choice-button"
                         onClick={() => navigationButton("/home/" + idUser + "/add")}
                 >

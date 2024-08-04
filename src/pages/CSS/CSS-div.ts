@@ -1,11 +1,5 @@
 import {CSSProperties} from "react";
 
-const tasksListTitle: CSSProperties = {
-    font: '3.5rem "Fira Sans", sans-serif', // "small-caps bold 24px/1 sans-serif",
-};
-const listGeneralSettings: CSSProperties = {
-    listStyleType: "none",
-};
 const divTaskSetting: CSSProperties = {
     WebkitFontSmoothing: "antialiasing",
     boxSizing: "border-box",
@@ -21,15 +15,8 @@ const divTaskSetting: CSSProperties = {
     flex: "0 0 100%",
 };
 
-const CSSInput: CSSProperties = {
-    display: "none",
-};
-
-const CSSTaskList = {
-    CSSInput,
+const CSSDiv = {
     divTaskSetting,
-    listGeneralSettings,
-    tasksListTitle
 };
 
-export default CSSTaskList;
+export default CSSDiv;

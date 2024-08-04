@@ -1,5 +1,5 @@
 import {Task} from "../../types/task.ts";
-import DateFunction from "./DateFunctions.tsx";
+import DateFunction from "./DateFunctions.ts";
 
 const SetShowTaskOrNo = (task: Task, dateDay: Date) => {
     // convert string date to more compressed date format

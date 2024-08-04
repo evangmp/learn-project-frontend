@@ -1,5 +1,4 @@
 import {CSSProperties} from "react";
-import {Simulate} from "react-dom/test-utils";
 
 const buttonGeneralSettings: CSSProperties = {
     appearance: "none",
@@ -12,14 +11,6 @@ const buttonGeneralSettings: CSSProperties = {
     overflow: "visible",
     padding: 0,
     width: "auto",
-};
-
-const inputGeneralSettings: CSSProperties = {
-    fontFamily: "inherit",
-    fontSize: "100%",
-    lineHeight: 1.15,
-    margin: 0,
-    overflow: "visible",
 };
 
 const buttonConnectionPageSettings: CSSProperties= {
@@ -103,12 +94,11 @@ const buttonTest: CSSProperties = {
     willChange: "transform",
 };
 
-const CSSConstants = {
+const CSSButton = {
     buttonGeneralSettings,
-    inputGeneralSettings,
     buttonConnectionPageSettings,
     buttonMainPageSettings,
     buttonTest,
 };
 
-export default CSSConstants;
+export default CSSButton;

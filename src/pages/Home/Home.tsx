@@ -1,8 +1,8 @@
-import CSSConstants from "../components/CSSConstants.ts";
 import React, {CSSProperties, useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -20,11 +20,11 @@ const Home = () => {
     return (
         <div>
             <div style={buttonDiv}>
-                <button style={CSSConstants.buttonConnectionPageSettings} className="connection-button">
+                <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
                     with Google
                 </button>
                 <div style={buttonDiv}>
-                    <button style={CSSConstants.buttonConnectionPageSettings} className="connection-button">
+                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
                         <Link to={"/connection"}>
                             log in
                         </Link>
@@ -32,7 +32,7 @@ const Home = () => {
                 </div>
 
                 <div style={buttonDiv}>
-                    <button style={CSSConstants.buttonConnectionPageSettings} className="connection-button">
+                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
                         <Link to={"/connection/create"}>
 
                             create an account

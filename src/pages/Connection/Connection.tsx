@@ -1,11 +1,11 @@
 import {Link, useNavigate} from "react-router-dom";
-import CSSConstants from "../components/CSSConstants.ts";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import CSSInput from "../CSS/CSS-input.ts";
 
 const Connection = () => {
     const navigate = useNavigate();
@@ -87,7 +87,7 @@ const Connection = () => {
                 <div className="form-group">
                     <label htmlFor="username">Enter username : </label>
                     <input
-                        style={CSSConstants.inputGeneralSettings}
+                        style={CSSInput.inputGeneralSettings}
                         type="text"
                         className="form-control"
                         id="username"
@@ -103,7 +103,7 @@ const Connection = () => {
                 <div className="form-group">
                     <label htmlFor="password">Enter password : </label>
                     <input
-                        style={CSSConstants.inputGeneralSettings}
+                        style={CSSInput.inputGeneralSettings}
                         type="password"
                         className="form-control"
                         id="password"

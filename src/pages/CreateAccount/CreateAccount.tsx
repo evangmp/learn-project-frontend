@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import CSSConstants from "../components/CSSConstants.ts"
 import IAccountData from "../../types/Account.ts";
 import {Link, useNavigate} from "react-router-dom";
 import SecurityService from "../../services/AuthentificationService.ts";
@@ -7,6 +6,7 @@ import {AxiosResponse} from "axios";
 import Method from "../../services/Method.ts";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import CSSInput from "../CSS/CSS-input.ts";
 
 const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
@@ -78,7 +78,7 @@ const CreateAccount = () => {
                 <div className="form-group">
                     <label htmlFor="username">Enter a username : </label>
                     <input
-                        style={CSSConstants.inputGeneralSettings}
+                        style={CSSInput.inputGeneralSettings}
                         type="text"
                         className="form-control"
                         id="username"
@@ -94,7 +94,7 @@ const CreateAccount = () => {
                 <div className="form-group">
                     <label htmlFor="email">Enter an e-mail address : </label>
                     <input
-                        style={CSSConstants.inputGeneralSettings}
+                        style={CSSInput.inputGeneralSettings}
                         type="text"
                         className="form-control"
                         id="email"
@@ -110,7 +110,7 @@ const CreateAccount = () => {
                 <div className="form-group">
                     <label htmlFor="password">Enter a password : </label>
                     <input
-                        style={CSSConstants.inputGeneralSettings}
+                        style={CSSInput.inputGeneralSettings}
                         type="password"
                         className="form-control"
                         id="password"

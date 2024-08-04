@@ -1,5 +1,5 @@
-import DateFunction from "./DateFunctions.tsx";
-import DateFunctions from "./DateFunctions.tsx";
+import DateFunction from "./DateFunctions.ts";
+import DateFunctions from "./DateFunctions.ts";
 
 const SetDefaultChecked = (taskDate: string, achievement: number[]) => {
     const actualDate: string = new Date().toLocaleString();

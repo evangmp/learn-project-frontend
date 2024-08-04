@@ -2,8 +2,9 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Discipline, ListTask} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
-import CSSConstants from "../components/CSSConstants.ts";
 import {AxiosResponse} from "axios";
+import CSSInput from "../CSS/CSS-input.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const Task = () => {
     const { idTask, idUser }= useParams();
@@ -90,7 +91,7 @@ const Task = () => {
     return (
         <div className="taskApp large-container-2">
             <div className="container-edit-form-1">
-                <h4 className="edit-title-1">Tutorial</h4>
+                <h4 className="edit-title-1">Task</h4>
                 <form className="form-edit-1">
                     <div className="form-group-1">
                         <label htmlFor="name" className="form-label-1">Name : </label>
@@ -101,7 +102,7 @@ const Task = () => {
                             name="name"
                             value={inputName}
                             onChange={(event) => setInputName(event.target.value)}
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                         />
                     </div>
 
@@ -111,7 +112,7 @@ const Task = () => {
                     <div className="form-group">
                         <input
                             id="physic-checkbox"
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                             type="radio"
                             className="checkbox-control-physic"
                             name="physic-checkbox"
@@ -125,7 +126,7 @@ const Task = () => {
 
                         <input
                             id="math-checkbox"
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                             type="radio"
                             className="checkbox-control-maths"
                             name="math-checkbox"
@@ -140,7 +141,7 @@ const Task = () => {
                 </form>
 
                 <button
-                    style={CSSConstants.buttonConnectionPageSettings}
+                    style={CSSButton.buttonConnectionPageSettings}
                     className="edit-button-3"
                     onClick={deleteTutorial}
                 >
@@ -148,7 +149,7 @@ const Task = () => {
                 </button>
 
                 <button
-                    style={CSSConstants.buttonConnectionPageSettings}
+                    style={CSSButton.buttonConnectionPageSettings}
                     type="submit"
                     className="edit-button-4"
                     onClick={updateTutorial}
@@ -158,7 +159,7 @@ const Task = () => {
                 <p className="p-edit-1">{message}</p>
                 <div>
                     <button
-                        style={CSSConstants.buttonConnectionPageSettings}
+                        style={CSSButton.buttonConnectionPageSettings}
 
                     >
                         <Link to={"/home/" + Number(idUser)}>

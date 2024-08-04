@@ -4,10 +4,13 @@ import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
-import CSSConstants from "../components/CSSConstants.ts";
 import Filters from "../Filters/Filters.tsx";
 import ListSort from "../Filters/ListSort.ts";
-import CSSTaskList from "../components/CSSTaskList.ts";
+import CSSTitle from "../CSS/CSS-title.ts";
+import CSSList from "../CSS/CSS-list.ts";
+import CSSInput from "../CSS/CSS-input.ts";
+import CSSDiv from "../CSS/CSS-div.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const TaskList = () => {
     const { idUser}= useParams();
@@ -130,7 +133,7 @@ const TaskList = () => {
     return (
         <div className="list row">
             <div className="col-md-6">
-                <h4 style={CSSTaskList.tasksListTitle}>Tasks List</h4>
+                <h4 style={CSSTitle.tasksListTitle}>Tasks List</h4>
 
                 <h5>Filters</h5>
 
@@ -150,12 +153,12 @@ const TaskList = () => {
                     {listTasks && listTasks.map((task: Task, index: number) => (
                             <div style={{padding: '2rem'}}>
 
-                                <li style={CSSTaskList.listGeneralSettings}
+                                <li style={CSSList.listGeneralSettings}
                                     className={"list-group-item " + task.taskDate}
                                     key={task.taskDate}
                                 >
                                     <div className="checkbox-wrapper-15">
-                                        <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSTaskList.CSSInput}
+                                        <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSInput.inputList}
                                                defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
                                                onChange={() => {
                                                    updateTask(task);
@@ -172,7 +175,7 @@ const TaskList = () => {
                                                 <span>{task.taskName}</span>
                                             </div>
                                             <div>
-                                                <span style={CSSTaskList.CSSInput}>
+                                                <span style={CSSInput.inputList}>
                                                     <svg width="12px" height="9px" viewBox="0 0 12 9">
                                                     </svg>
                                                 </span>
@@ -181,16 +184,16 @@ const TaskList = () => {
                                         </label>
                                     </div>
 
-                                    <div style={CSSTaskList.divTaskSetting}>
+                                    <div style={CSSDiv.divTaskSetting}>
                                         <button className="button-28"
                                                 onClick={() => navigate("/home/" + idUser + "/" + index)}
-                                                style={CSSConstants.buttonTest}
+                                                style={CSSButton.buttonTest}
                                         >
                                             Edit
                                         </button>
                                         <button onClick={() => deleteTask(task)}
                                                 className="button-28"
-                                                style={CSSConstants.buttonTest}
+                                                style={CSSButton.buttonTest}
                                         >
                                                 Delete
                                         </button>

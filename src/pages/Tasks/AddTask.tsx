@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Discipline, ListTask} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
-import CSSConstants from "../components/CSSConstants.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import SecurityService from "../../services/AuthentificationService.ts";
+import CSSButton from "../CSS/CSS-button.ts";
+import CSSInput from "../CSS/CSS-input.ts";
 
 const AddTask = () => {
     const { idUser}= useParams();
@@ -103,7 +104,7 @@ const AddTask = () => {
                 <div>
                     <h4>You submitted successfully!</h4>
                     <button
-                        style={CSSConstants.buttonGeneralSettings}
+                        style={CSSButton.buttonGeneralSettings}
                         className="btn btn-success"
                         onClick={resetInputs}
                     >
@@ -115,7 +116,7 @@ const AddTask = () => {
                     <div className="form-group">
                         <label htmlFor="name">Enter Name : </label>
                         <input
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                             type="text"
                             className="form-control"
                             id="name"
@@ -134,7 +135,7 @@ const AddTask = () => {
                     <div className="form-group">
                         <input
                             id="physic-checkbox"
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                             type="radio"
                             className="checkbox-control-physic"
                             name="physic-checkbox"
@@ -149,7 +150,7 @@ const AddTask = () => {
 
                         <input
                             id="math-checkbox"
-                            style={CSSConstants.inputGeneralSettings}
+                            style={CSSInput.inputGeneralSettings}
                             type="radio"
                             className="checkbox-control-maths"
                             name="math-checkbox"
@@ -162,14 +163,14 @@ const AddTask = () => {
                         <label htmlFor="math-checkbox">Mathematics</label>
                     </div>
                     <button
-                        style={CSSConstants.buttonMainPageSettings}
+                        style={CSSButton.buttonMainPageSettings}
                         onClick={submitTask}
                         className="btn btn-success"
                     >
                         Submit
                     </button>
                         <button
-                            style={CSSConstants.buttonMainPageSettings}
+                            style={CSSButton.buttonMainPageSettings}
                             onClick={() => navigationButton("/home/" + Number(idUser))}
                         >
                             Return back
