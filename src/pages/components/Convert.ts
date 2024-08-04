@@ -15,7 +15,7 @@ const ListTaskToITaskData = (listTask: Array<Task>, idUser: number) => {
 
     let i = 1;
 
-    while(listTask[i] != undefined) {
+    while(listTask[i] !== undefined) {
         i++;
     }
 
@@ -30,7 +30,9 @@ const ListTaskToITaskData = (listTask: Array<Task>, idUser: number) => {
     }
 
     return listITaskData;
-}
+};
+
+
 
 const Convert = {
     ListTaskToITaskData,

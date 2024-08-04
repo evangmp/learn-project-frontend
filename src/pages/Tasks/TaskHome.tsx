@@ -34,6 +34,7 @@ const TasksHome = () => {
         // delete the token in DB
         SecurityService.deleteToken(Number(idUser))
             .then((response: AxiosResponse) => {
+                console.log("delete Token task home : ");
                 console.log(response.data);
             })
             .catch((e: Error) => {

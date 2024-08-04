@@ -27,7 +27,7 @@ const SetShowTaskOrNo = (task: Task, dateDay: Date) => {
             const numberDayTask = DateFunction.switchToLenghtYear(dayTask, monthTask, 1);
 
             const difference = numberDay - numberDayTask;
-            console.log(difference);
+            // console.log(difference);
 
             // if the difference (in terms of days)is = 0 (same day), 1 (next day), 3 (to continue), etc
             return DateFunction.boolForTaksOrNo(difference);
@@ -45,7 +45,7 @@ const SetShowTaskOrNo = (task: Task, dateDay: Date) => {
         if(yearActualDate === yearTask) {
             const numberDayTask = DateFunction.switchToLenghtYear(dayTask, monthTask, 0);
             const difference = numberDay - numberDayTask;
-            console.log(difference);
+            // console.log(difference);
             return DateFunction.boolForTaksOrNo(difference);
         }
         else {

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {ITaskData, Discipline} from "../../types/Task.ts";
+import {Discipline, ListTask} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import CSSConstants from "../components/CSSConstants.ts";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import SecurityService from "../../services/AuthentificationService.ts";
 
@@ -20,27 +20,10 @@ const AddTask = () => {
     const [inputName, setInputName] = useState<string>("");
 
     const [taskSaved, setTaskSaved] = useState<boolean>(false);
-    const [firstTask, setFirstTask] = useState<boolean>(false);
 
-    // initialization of setallthetasks
+    // initialization for setAllTheTasks
     const id_user: number = Number(idUser);
-    const nameTasks: Map<number, string> = new Map();
-    const disciplineTasks: Map<number, Discipline> = new Map();
-    const achievementTasks: Map<number, [number, number, number, number, number, number, number, number, number, number]> = new Map();
-    const dateTasks: Map<number, string> = new Map();
-    const [allTheTasks, setAllTheTasks] = useState<ITaskData>(null);
-
-    // post method to send data
-    const postMethod = (taskToSend: ITaskData) => {
-        TaskDataService.createUserTask(taskToSend)
-            .then((response: AxiosResponse) => {
-                //console.debug(response);
-                resetInputs();
-            })
-            .catch((e: Error) => {
-                console.error(e);
-            });
-    }
+    const [allTheTasks, setAllTheTasks] = useState<ListTask>(null);
 
     // get method to have all the tasks
     const getUserTask = (id_user: number) => {
@@ -50,7 +33,8 @@ const AddTask = () => {
         }
         SecurityService.getUserData(id_user)
             .then((response: AxiosResponse) => {
-                //console.log(response.data.taskName);
+                console.log("getUsertask, addtask : ")
+                console.log(response.data.taskName);
                 setAllTheTasks({
                     id: id_user,
                     taskName: response.data.taskName,
@@ -58,13 +42,6 @@ const AddTask = () => {
                     taskAchievement: response.data.taskAchievement,
                     taskDate: response.data.taskDate,
                 });
-                if(response.data.taskName[0] == undefined) {
-                    setFirstTask(true);
-                }
-                else {
-                    setFirstTask(false);
-                }
-                //console.log("firstTask ? " + firstTask);
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -93,57 +70,27 @@ const AddTask = () => {
             return;
         }
 
-        // initialize setAllTasks
-        getUserTask(id_user);
-
-        if(firstTask) {
-            console.log("si ça passe par là c'est que c'est cet id est pas initialité");
-            const taskSend = {
-                id: id_user,
-                taskName: {0: inputName},
-                taskDiscipline: {0: selectedDiscipline},
-                taskDate: {0: new Date().toLocaleString()},
-                taskAchievement: {0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-            };
-            postMethod(taskSend);
-            return;
+        let size: number = 0;
+        while(allTheTasks.taskName[size.toString()] !== undefined) {
+            size +=1;
         }
 
-        // to have the size of all the tasks already presents (because function like size and length doesn't work) and set map
-        let i: number = 0;
-        while (allTheTasks.taskName[i] !== undefined) {
-            nameTasks.set(i, allTheTasks.taskName[i]);
-            disciplineTasks.set(i, allTheTasks.taskDiscipline[i]);
-            achievementTasks.set(i, allTheTasks.taskAchievement[i]);
-            dateTasks.set(i, allTheTasks.taskDate[i]);
-            console.log(i + " : " + nameTasks.get(i));
-            i++;
-        }
+        const listToSend: ListTask = allTheTasks;
+        listToSend.taskName[size.toString()] = inputName;
+        listToSend.taskDiscipline[size.toString()] = selectedDiscipline;
+        listToSend.taskDate[size.toString()] = new Date().toLocaleString();
+        listToSend.taskAchievement[size.toString()] = [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]
 
-        // when called, add at the of each lists the new values
-        nameTasks.set(i, inputName);
-        disciplineTasks.set(i, selectedDiscipline);
-        achievementTasks.set(i, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-        dateTasks.set(i, new Date().toLocaleString());
-
-        const nouveaulasuite = {
-            id: id_user,
-            taskName: {0: allTheTasks.taskName[0]},
-            taskDiscipline: {0: allTheTasks.taskDiscipline[0]},
-            taskAchievement: {0: allTheTasks.taskAchievement[0]},
-            taskDate: {0: allTheTasks.taskDate[0]},
-        };
-
-        let p = 1;
-        while(nameTasks.get(p) !== undefined) {
-            nouveaulasuite.taskName[p.toString()] = nameTasks.get(p);
-            nouveaulasuite.taskDiscipline[p.toString()] = disciplineTasks.get(p);
-            nouveaulasuite.taskAchievement[p.toString()] = achievementTasks.get(p);
-            nouveaulasuite.taskDate[p.toString()] = dateTasks.get(p);
-            console.log(p + " + " + nameTasks.get(p));
-            p++;
-        }
-        postMethod(nouveaulasuite);
+        TaskDataService.createUserTask(listToSend)
+            .then((response: AxiosResponse) => {
+                console.log("create User Task, add task : ")
+                console.debug(response);
+                resetInputs();
+            })
+            .catch((e: Error) => {
+                console.log("erreur add taks post");
+                console.error(e);
+            });
     };
 
     const navigationButton = (link: string) => {
@@ -176,8 +123,6 @@ const AddTask = () => {
                             value={inputName}
                             onChange={(event) => {
                                 setInputName(event.target.value);
-                                getUserTask(Number(idUser));
-                                //console.log("input name : " + inputName);
                             }}
                             name="name"
                         />

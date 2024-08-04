@@ -147,8 +147,9 @@ const TaskList = () => {
                 </div>
 
                 <ul className="list-group">
-                    {listTasks && listTasks.map((task: Task) => (
+                    {listTasks && listTasks.map((task: Task, index: number) => (
                             <div style={{padding: '2rem'}}>
+
                                 <li style={CSSTaskList.listGeneralSettings}
                                     className={"list-group-item " + task.taskDate}
                                     key={task.taskDate}
@@ -182,7 +183,7 @@ const TaskList = () => {
 
                                     <div style={CSSTaskList.divTaskSetting}>
                                         <button className="button-28"
-                                                onClick={() => navigate("/home/" + idUser + "/" + task.id)}
+                                                onClick={() => navigate("/home/" + idUser + "/" + index)}
                                                 style={CSSConstants.buttonTest}
                                         >
                                             Edit
@@ -195,6 +196,7 @@ const TaskList = () => {
                                         </button>
                                     </div>
                                 </li>
+
                             </div>
                         )
                     )}
@@ -203,7 +205,7 @@ const TaskList = () => {
             <div className="col-md-6">
                 {listTasks ? (
                     <div>
-                        <p>Open bar to learn</p>
+                        <p>you know what you have to do</p>
                         <br/>
                     </div>
                 ) : (
