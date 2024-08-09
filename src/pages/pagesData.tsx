@@ -6,6 +6,7 @@ import TasksHome from "./Tasks/TaskHome.tsx";
 import AddTask from "./Tasks/AddTask.tsx";
 import Task from "./Tasks/Task.tsx";
 import Error from "./Connection/Error.tsx";
+import GeneralHome from "./Home/GeneralHome.tsx";
 
 const pagesData: routerType[] = [
     {
@@ -47,6 +48,11 @@ const pagesData: routerType[] = [
         path: "/error",
         element: <Error/>,
         title: "error connection",
+    },
+    {
+        path: "/hometest",
+        element: <GeneralHome/>,
+        title: "test home",
     },
 ];
 

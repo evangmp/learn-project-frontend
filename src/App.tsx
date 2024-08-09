@@ -1,6 +1,7 @@
 import React, {CSSProperties} from 'react';
 import './App.css';
 import Router from "./pages/Router.tsx";
+import HomeRouter from "./pages/HomeRouter.tsx";
 
 const App: React.FC = () => {
 
@@ -17,8 +18,30 @@ const App: React.FC = () => {
         maxWidth: "50rem",
     };
 
+    const testMain: CSSProperties = {
+        backgroundColor: "#fceb99s", //"#9e9a91",
+        boxSizing: "inherit",
+        width:"100%",
+        height: "100%",
+        //top:"20rem",
+        //bottom:"10rem",
+    };
+
+    const testMain2: CSSProperties = {
+        backgroundColor:"red",
+    };
+
+    const testMain3: CSSProperties = {
+        backgroundColor:"blue  ",
+        //width: "100rem",
+        //height: "10rem",
+    };
+
     return (
-        <div style={mainDiv}>
+        <div className= "first-div" style={testMain}>
+            <div style={testMain3}>
+                <HomeRouter/>
+            </div>
             <Router />
         </div>
     );
