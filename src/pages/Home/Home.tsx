@@ -57,7 +57,7 @@ const Home = () => {
             <p style={{color: "black"}}>OptLearn</p>
             {profile ? (
                 <div style={homeStyle}>
-                    <p>Username</p>
+                    <p>id : {CookiesConfiguration.getCookie("login")}</p>
 
                     <div>
                         <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">

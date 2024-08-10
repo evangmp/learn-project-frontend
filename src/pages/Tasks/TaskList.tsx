@@ -91,7 +91,7 @@ const TaskList = () => {
     const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
         TaskDataService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
-                console.debug(response.data.taskAchievement);
+                // console.debug(response.data.taskAchievement);
                 if(method == "delete") {
                     setRefreshList(true);
                     navigate("/");
@@ -130,10 +130,6 @@ const TaskList = () => {
     const NoneDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "None", setDisciplineFilter, disciplineUpdateFilter);
     const MathematicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "mathematics", setDisciplineFilter, disciplineUpdateFilter);
     const PhysicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "physics", setDisciplineFilter, disciplineUpdateFilter);
-
-
-    console.log(listTasks);
-    console.log(listAllTheTasks);
 
     return (
         <div className="list row">

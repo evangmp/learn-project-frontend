@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import TasksList from "./TaskList.tsx";
 import Task from "./Task.tsx";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 
 const TasksHome = () => {
@@ -17,10 +18,21 @@ const TasksHome = () => {
     return (
         <div>
             {login ? (
-                <Routes>
-                    <Route path="/" element={<TasksList/>}/>
-                    <Route path="/:idTask" element={<Task/>}/>
-                </Routes>
+                <div>
+                    <nav>
+                        <button style={CSSButton.buttonMainPageSettings}
+                                className="choice-button"
+                                onClick={() => navigate("/add")}
+                        >
+                            Add
+                        </button>
+                    </nav>
+
+                    <Routes>
+                        <Route path="/" element={<TasksList/>}/>
+                        <Route path="/:idTask" element={<Task/>}/>
+                    </Routes>
+                </div>
             ) : (
                 <div>
                     not connected
