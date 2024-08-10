@@ -1,19 +1,12 @@
 import {routerType} from "../types/router.types.ts";
-import Home from "./Home/Home.tsx";
 import Connection from "./Connection/Connection.tsx";
 import CreateAccount from "./CreateAccount/CreateAccount.tsx";
 import TasksHome from "./Tasks/TaskHome.tsx";
 import AddTask from "./Tasks/AddTask.tsx";
 import Task from "./Tasks/Task.tsx";
 import Error from "./Connection/Error.tsx";
-import GeneralHome from "./Home/GeneralHome.tsx";
 
 const pagesData: routerType[] = [
-    {
-        path:"",
-        element: <Home/>,
-        title: "home"
-    },
     {
         path: "connection",
         element: <Connection />,
@@ -25,22 +18,22 @@ const pagesData: routerType[] = [
         title: "createAccount"
     },
     {
-        path: "home/:idUser",
+        path: "",
         element: <TasksHome/>,
         title:"task home",
     },
     {
-        path: "home/:idUser/:idTask",
+        path: "/:idTask",
         element: <Task/>,
         title: "task parameters, updated, etc"
     },
     {
-        path: "home/:idUser",
+        path: "",
         element: <Task/>,
         title: "for home",
     },
     {
-        path: "home/:idUser/add",
+        path: "/add",
         element: <AddTask/>,
         title: "add task",
     },
@@ -48,11 +41,6 @@ const pagesData: routerType[] = [
         path: "/error",
         element: <Error/>,
         title: "error connection",
-    },
-    {
-        path: "/hometest",
-        element: <GeneralHome/>,
-        title: "test home",
     },
 ];
 

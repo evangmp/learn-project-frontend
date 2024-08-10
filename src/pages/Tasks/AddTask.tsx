@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Discipline, ListTask} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import SecurityService from "../../services/AuthentificationService.ts";
 import CSSButton from "../CSS/CSS-button.ts";
 import CSSInput from "../CSS/CSS-input.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const AddTask = () => {
-    const { idUser}= useParams();
+    const idUser = cookiesConfiguration.getCookie("login");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -171,7 +172,7 @@ const AddTask = () => {
                     </button>
                         <button
                             style={CSSButton.buttonMainPageSettings}
-                            onClick={() => navigationButton("/home/" + Number(idUser))}
+                            onClick={() => navigationButton("/")}
                         >
                             Return back
                         </button>

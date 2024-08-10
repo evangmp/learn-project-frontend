@@ -4,7 +4,6 @@ import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import CSSInput from "../CSS/CSS-input.ts";
 
 const Connection = () => {
@@ -12,7 +11,7 @@ const Connection = () => {
 
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
-            navigate("/home/" + cookiesConfiguration.getCookie("login"));
+            navigate("/");
     }, [navigate]);
 
     const [message, setMessage] = useState<string>("");
@@ -59,7 +58,7 @@ const Connection = () => {
                 CookiesConfiguration.setCookie(response.data.id, response.data.accessToken, 7);
 
                 // navigate to home user
-                navigate("/home/" + response.data.id);
+                navigate("/");
 
             })
             .catch((e: Error) => {

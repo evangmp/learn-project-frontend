@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ListTask, Task} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
 import Filters from "../Filters/Filters.tsx";
 import ListSort from "../Filters/ListSort.ts";
@@ -11,9 +11,10 @@ import CSSList from "../CSS/CSS-list.ts";
 import CSSInput from "../CSS/CSS-input.ts";
 import CSSDiv from "../CSS/CSS-div.ts";
 import CSSButton from "../CSS/CSS-button.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const TaskList = () => {
-    const { idUser}= useParams();
+    const idUser: string | null = cookiesConfiguration.getCookie("login");
     const navigate = useNavigate();
 
     // to refresh the list when a task is deleted
@@ -92,7 +93,7 @@ const TaskList = () => {
                 console.debug(response.data.taskAchievement);
                 if(method == "delete") {
                     setRefreshList(true);
-                    navigate("/home/" + idUser);
+                    navigate("/");
                 }
             })
             .catch((e: Error) => {
@@ -119,7 +120,6 @@ const TaskList = () => {
 
     const disciplineUpdateFilter = (discipline: string) => {
         ListSort.disciplineTask(listAllTheTasks, setListTasks, discipline, timeFilter);
-        //console.log(listTasks);
     };
 
     const AllFilter: JSX.Element = Filters.defaultFilter(timeFilter, "All", setTimeFilter, updateFilter);
@@ -129,6 +129,10 @@ const TaskList = () => {
     const NoneDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "None", setDisciplineFilter, disciplineUpdateFilter);
     const MathematicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "mathematics", setDisciplineFilter, disciplineUpdateFilter);
     const PhysicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "physics", setDisciplineFilter, disciplineUpdateFilter);
+
+
+    console.log(listTasks);
+    console.log(listAllTheTasks);
 
     return (
         <div className="list row">
@@ -186,7 +190,7 @@ const TaskList = () => {
 
                                     <div style={CSSDiv.divTaskSetting}>
                                         <button className="button-28"
-                                                onClick={() => navigate("/home/" + idUser + "/" + index)}
+                                                onClick={() => navigate("/" + index)}
                                                 style={CSSButton.buttonTest}
                                         >
                                             Edit

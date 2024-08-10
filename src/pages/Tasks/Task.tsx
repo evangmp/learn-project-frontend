@@ -5,9 +5,11 @@ import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import CSSInput from "../CSS/CSS-input.ts";
 import CSSButton from "../CSS/CSS-button.ts";
+import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 
 const Task = () => {
-    const { idTask, idUser }= useParams();
+    const { idTask }= useParams();
+    const idUser = cookiesConfiguration.getCookie("login");
     const navigate = useNavigate();
 
     // for input
@@ -42,10 +44,10 @@ const Task = () => {
             });
     };
 
-    useEffect(() => { // voir comment ça fonctionne
+    useEffect(() => {
         if(idUser)
             getTask(Number(idUser));
-    }, [idUser, idTask]);
+    }, [idUser]);
 
 
     const updateTutorial = () => {
@@ -81,7 +83,7 @@ const Task = () => {
             .then((response: AxiosResponse) => {
                 console.log("delete : ");
                 console.log(response.data);
-                navigate("/home/" + idUser);
+                navigate("/");
             })
             .catch((e: Error) => {
                 console.log(e);
@@ -162,7 +164,7 @@ const Task = () => {
                         style={CSSButton.buttonConnectionPageSettings}
 
                     >
-                        <Link to={"/home/" + Number(idUser)}>
+                        <Link to={"/"}>
                             Cancel
                         </Link>
                     </button>

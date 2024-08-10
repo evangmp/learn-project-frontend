@@ -5,7 +5,6 @@ import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import Method from "../../services/Method.ts";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import CSSInput from "../CSS/CSS-input.ts";
 
 const CreateAccount = () => {
@@ -14,7 +13,7 @@ const CreateAccount = () => {
 
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
-            navigate("/home/" + cookiesConfiguration.getCookie("login"));
+            navigate("/");
     }, [navigate]);
 
     // initialize the body to create the username/password variables

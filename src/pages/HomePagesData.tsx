@@ -1,11 +1,16 @@
 import {routerType} from "../types/router.types.ts";
-import TopPart from "./Home/TopPart.tsx";
+import Home from "./Home/Home.tsx";
 
 const HomePagesData: routerType[] = [
     {
         path:"",
-        element: <TopPart/>,
-        title: "test",
+        element: <Home/>,
+        title: "home"
+    },
+    {
+        path: "/add",
+        element: <Home/>,
+        title: "add task"
     },
 ];
 
