@@ -1,11 +1,11 @@
-import {ListTask, Task} from "../../types/task.ts";
+import {ListTask, TaskToSend} from "../../types/task.ts";
 
-const ListTaskToITaskData = (listTask: Array<Task>, idUser: number) => {
+const ListTaskToITaskData = (listTask: Array<ListTask>, idUser: number) => {
     if(listTask.length == 0) {
         return null;
     }
 
-    const listITaskData: ListTask = {
+    const listITaskData: TaskToSend = {
         id: idUser,
         taskName: {0: listTask[0].taskName},
         taskDiscipline: {0: listTask[0].taskDiscipline},

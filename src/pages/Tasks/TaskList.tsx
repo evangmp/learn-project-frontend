@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ListTask, Task} from "../../types/Task.ts";
+import {ListTask, TaskToSend} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
@@ -21,11 +21,11 @@ const TaskList = () => {
     const [refreshList, setRefreshList] = useState<boolean>(false);
 
     // form ready to be sent to DB
-    const [allTheTasks, setAllTheTasks] = useState<ListTask>(null);
+    const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
     // to map and print tasks
-    const [listTasks, setListTasks] = useState<Array<Task>>(null);
-    const [listAllTheTasks, setListAllTheTasks] = useState<Array<Task>>(null);
+    const [listTasks, setListTasks] = useState<Array<ListTask>>(null);
+    const [listAllTheTasks, setListAllTheTasks] = useState<Array<ListTask>>(null);
 
     // filter button setting
     const [timeFilter, setTimeFilter] = useState<string>("All");
@@ -53,10 +53,11 @@ const TaskList = () => {
                 }
 
                 let i: number = 0;
-                const initializationTaskList: Array<Task> = [];
+                const initializationTaskList: Array<ListTask> = [];
                 while (response.data.taskName[i] !== undefined) {
                     initializationTaskList.push({
                         id: idUser,
+                        index: i,
                         taskName: response.data.taskName[i],
                         taskDiscipline: response.data.taskDiscipline[i],
                         taskAchievement: response.data.taskAchievement[i],
@@ -87,7 +88,7 @@ const TaskList = () => {
         return SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
     };
 
-    const serviceTaskList = (taskToSend: ListTask, method: string) => {
+    const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
         TaskDataService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
                 console.debug(response.data.taskAchievement);
@@ -102,11 +103,11 @@ const TaskList = () => {
             });
     }
 
-    const deleteTask = (task: Task) => {
+    const deleteTask = (task: ListTask) => {
         serviceTaskList(ListSort.deleteTask(listAllTheTasks, task.taskName, task.taskDate, Number(idUser), setAllTheTasks, setListTasks, setListAllTheTasks), "delete");
     };
 
-    const updateTask = (task: Task) => {
+    const updateTask = (task: ListTask) => {
         ListSort.updateTask(listAllTheTasks, listTasks, task, setAllTheTasks, setListTasks, setListAllTheTasks);
         serviceTaskList(allTheTasks, "");
     };
@@ -114,7 +115,7 @@ const TaskList = () => {
     const updateFilter = (typeFilter: string) => {
         setTimeFilter(typeFilter);
 
-        const sortedList: Task[] = ListSort.timeTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
+        const sortedList: ListTask[] = ListSort.timeTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
         setListTasks(sortedList);
     };
 
@@ -154,7 +155,7 @@ const TaskList = () => {
                 </div>
 
                 <ul className="list-group">
-                    {listTasks && listTasks.map((task: Task, index: number) => (
+                    {listTasks && listTasks.map((task: ListTask) => (
                             <div style={{padding: '2rem'}}>
 
                                 <li style={CSSList.listGeneralSettings}
@@ -190,7 +191,7 @@ const TaskList = () => {
 
                                     <div style={CSSDiv.divTaskSetting}>
                                         <button className="button-28"
-                                                onClick={() => navigate("/" + index)}
+                                                onClick={() => navigate("/" + task.index)}
                                                 style={CSSButton.buttonTest}
                                         >
                                             Edit

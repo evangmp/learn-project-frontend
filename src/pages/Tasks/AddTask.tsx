@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Discipline, ListTask} from "../../types/Task.ts";
+import {Discipline, TaskToSend} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {useNavigate} from "react-router-dom";
 import {AxiosResponse} from "axios";
@@ -25,7 +25,7 @@ const AddTask = () => {
 
     // initialization for setAllTheTasks
     const id_user: number = Number(idUser);
-    const [allTheTasks, setAllTheTasks] = useState<ListTask>(null);
+    const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
     // get method to have all the tasks
     const getUserTask = (id_user: number) => {
@@ -77,7 +77,7 @@ const AddTask = () => {
             size +=1;
         }
 
-        const listToSend: ListTask = allTheTasks;
+        const listToSend: TaskToSend = allTheTasks;
         listToSend.taskName[size.toString()] = inputName;
         listToSend.taskDiscipline[size.toString()] = selectedDiscipline;
         listToSend.taskDate[size.toString()] = new Date().toLocaleString();

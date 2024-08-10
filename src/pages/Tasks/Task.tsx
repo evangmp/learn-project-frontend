@@ -1,6 +1,6 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Discipline, ListTask} from "../../types/Task.ts";
+import {Discipline, TaskToSend} from "../../types/Task.ts";
 import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import CSSInput from "../CSS/CSS-input.ts";
@@ -17,7 +17,7 @@ const Task = () => {
     const [inputName, setInputName] = useState<string>("");
 
     // to save all the tasks associate with the user id (and then update or delete a task)
-    const [allTheTasks, setAllTheTasks] = useState<ListTask>(null);
+    const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
     // const [currentTask, setCurrentTask] = useState<ITaskData>(initialTaskState);
     const [message, setMessage] = useState<string>("");
@@ -47,7 +47,7 @@ const Task = () => {
     useEffect(() => {
         if(idUser)
             getTask(Number(idUser));
-    }, [idUser]);
+    }, [getTask, idUser]);
 
 
     const updateTutorial = () => {
@@ -63,7 +63,7 @@ const Task = () => {
             return;
         }
 
-        const taskToSend: ListTask = allTheTasks;
+        const taskToSend: TaskToSend = allTheTasks;
         taskToSend.taskName[idTask?.toString()] = inputName;
         taskToSend.taskDiscipline[idTask?.toString()] = selectedDiscipline;
 

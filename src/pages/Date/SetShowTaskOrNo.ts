@@ -1,7 +1,7 @@
-import {Task} from "../../types/task.ts";
+import {ListTask} from "../../types/task.ts";
 import DateFunction from "./DateFunctions.ts";
 
-const SetShowTaskOrNo = (task: Task, dateDay: Date) => {
+const SetShowTaskOrNo = (task: ListTask, dateDay: Date) => {
     // convert string date to more compressed date format
     const dicActualDate= DateFunction.sortDate(dateDay.toLocaleDateString());
     const dicTaskDate = DateFunction.sortDate(task.taskDate);

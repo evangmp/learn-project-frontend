@@ -1,9 +1,9 @@
-import {Task} from "../../types/task.ts";
+import {ListTask} from "../../types/task.ts";
 import setAchievement from "../Date/SetAchievement.ts";
 
 // take as an argument a list and return only the task that are not checked in the list
-const activeTasks = (listTask: Array<Task>) => {
-    const sortedList: Task[] = new Array<Task>();
+const activeTasks = (listTask: Array<ListTask>) => {
+    const sortedList: ListTask[] = new Array<ListTask>();
 
     for(let i:number = 0; i < listTask.length; i++) {
         if(!setAchievement.SetDefaultChecked(listTask[i].taskDate, listTask[i].taskAchievement)) {
@@ -14,8 +14,8 @@ const activeTasks = (listTask: Array<Task>) => {
 };
 
 // take as an argument a list and return only the task that are checked in the list
-const completedTasks = (listTask: Array<Task>) => {
-    const sortedList: Task[] = new Array<Task>();
+const completedTasks = (listTask: Array<ListTask>) => {
+    const sortedList: ListTask[] = new Array<ListTask>();
 
     for(let i: number = 0; i<listTask.length; i++) {
         if(setAchievement.SetDefaultChecked(listTask[i].taskDate, listTask[i].taskAchievement)) {
@@ -25,9 +25,9 @@ const completedTasks = (listTask: Array<Task>) => {
     return sortedList;
 };
 
-const disciplineFilter = (discipline: string, time: string, listAllTheTasks: Task[]) => {
-    const sortedList: Task[] = new Array<Task>();
-    let preSortedList: Task[] = new Array<Task>();
+const disciplineFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
+    const sortedList: ListTask[] = new Array<ListTask>();
+    let preSortedList: ListTask[] = new Array<ListTask>();
 
     switch(time) {
         case "All":
@@ -59,8 +59,8 @@ const disciplineFilter = (discipline: string, time: string, listAllTheTasks: Tas
     return sortedList;
 }
 
-const timeFilter = (discipline: string, time: string, listAllTheTasks: Task[]) => {
-    let sortedList: Task[] = new Array<Task>();
+const timeFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
+    let sortedList: ListTask[] = new Array<ListTask>();
 
     if(discipline == "None") {
         switch (time) {
@@ -77,7 +77,7 @@ const timeFilter = (discipline: string, time: string, listAllTheTasks: Task[]) =
         }
     }
     else {
-        const preSortedList: Task[] = new Array<Task>();
+        const preSortedList: ListTask[] = new Array<ListTask>();
 
         for(let i: number = 0; i < listAllTheTasks.length; i++) {
             if(listAllTheTasks[i].taskDiscipline == discipline) {
