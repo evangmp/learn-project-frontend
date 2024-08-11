@@ -33,6 +33,7 @@ const Home = () => {
 
             });
         setProfile(false);
+        navigate("/");
         window.location.reload();
     }
 
@@ -60,24 +61,18 @@ const Home = () => {
                     <p>id : {CookiesConfiguration.getCookie("login")}</p>
 
                     <div>
-                        <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
-                            <Link to={"/"} onClick={logOut}>
-                                log out
-                            </Link>
+                        <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={logOut}>
+                            <span>Log out</span>
                         </button>
                     </div>
                 </div>
             ) : (
                 <div style={buttonsContainerStyle}>
-                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
-                        <Link to={"/connection"}>
-                            log in
-                        </Link>
+                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={() => navigate("/connection")}>
+                        <span>Log in</span>
                     </button>
-                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button">
-                        <Link to={"/connection/create"}>
-                            create an account
-                        </Link>
+                    <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={() => navigate("connection/create")}>
+                        <span>Create an account</span>
                     </button>
                 </div>
             )}

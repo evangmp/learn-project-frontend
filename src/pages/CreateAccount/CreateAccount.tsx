@@ -6,6 +6,7 @@ import {AxiosResponse} from "axios";
 import Method from "../../services/Method.ts";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import CSSInput from "../CSS/CSS-input.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
@@ -58,19 +59,22 @@ const CreateAccount = () => {
                 console.log(response.data);
                 setMessage("working");
                 Method.AccountInitialisation(response.data);
+                navigate("/connection");
             })
-            .catch((e: Error) => {
-                setMessage("problem with the creation");
+            .catch((e: AxiosResponse) => {
+                setMessage(e.response.data.message);
                 console.log(e);
                 return;
             });
-        navigate("/");
     };
 
     return (
         <div>
             <div>
                 Create an account :
+                <button onClick={() => navigate("/connection")} style={CSSButton.buttonConnectionPageSettings} className="connection-button">
+                    <span>Already an account</span>
+                </button>
             </div>
 
             <div>
@@ -125,17 +129,10 @@ const CreateAccount = () => {
             </div>
 
             <div>
-                <button>
-                    <Link to={"/connection"}>
-                        Already an account
-                    </Link>
+                <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={() => navigate("/")}>
+                    <span>Return home</span>
                 </button>
-                <button>
-                    <Link to={"/"}>
-                        Return home
-                    </Link>
-                </button>
-                <button onClick={saveAccount}>
+                <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={saveAccount}>
                     submit
                 </button>
             </div>
