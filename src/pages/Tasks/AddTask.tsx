@@ -15,7 +15,9 @@ const AddTask = () => {
     useEffect(() => {
         if(idUser)
             getUserTask(Number(idUser));
-    }, [idUser]);
+        if(!cookiesConfiguration.getCookie("log in"))
+            navigate("/");
+    }, [idUser, navigate]);
 
     // boolean to set the discipline checkboxes
     const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | undefined>(undefined);

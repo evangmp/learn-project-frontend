@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import Method from "../../services/Method.ts";

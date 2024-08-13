@@ -12,7 +12,7 @@ const TasksHome = () => {
 
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
-            setLogin(true)
+            setLogin(true);
     }, [navigate]);
 
     return (

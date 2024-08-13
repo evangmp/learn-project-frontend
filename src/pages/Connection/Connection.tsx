@@ -1,10 +1,11 @@
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
 import CSSInput from "../CSS/CSS-input.ts";
+import CSSButton from "../CSS/CSS-button.ts";
 
 const Connection = () => {
     const navigate = useNavigate();
@@ -61,7 +62,7 @@ const Connection = () => {
                 navigate("/");
 
             })
-            .catch((e: Error) => {
+            .catch((e: AxiosResponse) => {
                 console.log(e);
                 setMessage("Error, please retry");
 
@@ -75,10 +76,8 @@ const Connection = () => {
             </div>
 
             <div>
-                <button>
-                    <Link to={"/connection/create"}>
-                        Create an account
-                    </Link>
+                <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={() => navigate("/connection/create")}>
+                    <span>Create an account</span>
                 </button>
             </div>
 
@@ -117,13 +116,11 @@ const Connection = () => {
                 <p>{message}</p>
             </div>
 
-            <button>
-                <Link to={"/"}>
-                    Cancel
-                </Link>
+            <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={() => navigate("/")}>
+                <span>Cancel</span>
             </button>
 
-            <button onClick={signInUser}>
+            <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={signInUser}>
                 submit
             </button>
         </div>
