@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {ListTask, TaskToSend} from "../../types/Task.ts";
-import TaskDataService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
 import SetAchievement from "../Date/SetAchievement.ts";
@@ -12,6 +11,7 @@ import CSSInput from "../CSS/CSS-input.ts";
 import CSSDiv from "../CSS/CSS-div.ts";
 import CSSButton from "../CSS/CSS-button.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import TaskService from "../../services/TaskService.ts";
 
 const TaskList = () => {
     const idUser: string | null = cookiesConfiguration.getCookie("login");
@@ -44,13 +44,22 @@ const TaskList = () => {
 
     // get method to bring all the tasks from the DB
     const getTask = (idUser: number) => { // idUser "bonjour"
-        TaskDataService.getUserData(idUser)
+        TaskService.getUserData(idUser)
             .then((response: AxiosResponse) => {
                 console.log(response);
-                if(response.data.taskName[0] == undefined) {
+                if(response.data == "") {
                     setListTasks(null);
                     return;
                 }
+                /*
+                if(response.data.taskName[0] == undefined) {
+                    console.log("probleme çava");
+                    setListTasks(null);
+                    return;
+                }
+
+                 */
+
 
                 let i: number = 0;
                 const initializationTaskList: Array<ListTask> = [];
@@ -89,7 +98,8 @@ const TaskList = () => {
     };
 
     const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
-        TaskDataService.updateTask(taskToSend)
+        console.log(taskToSend);
+        TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
                 // console.debug(response.data.taskAchievement);
                 if(method == "delete") {
@@ -101,10 +111,10 @@ const TaskList = () => {
                 console.log("erreur");
                 console.log(e);
             });
-    }
+    };
 
     const deleteTask = (task: ListTask) => {
-        serviceTaskList(ListSort.deleteTask(listAllTheTasks, task.taskName, task.taskDate, Number(idUser), setAllTheTasks, setListTasks, setListAllTheTasks), "delete");
+        serviceTaskList(ListSort.deleteTask(listAllTheTasks, task.index, Number(idUser), setAllTheTasks, setListTasks, setListAllTheTasks), "delete");
     };
 
     const updateTask = (task: ListTask) => {

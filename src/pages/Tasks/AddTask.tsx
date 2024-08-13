@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Discipline, TaskToSend} from "../../types/Task.ts";
-import TaskDataService from "../../services/AuthentificationService.ts";
 import {useNavigate} from "react-router-dom";
 import {AxiosResponse} from "axios";
-import SecurityService from "../../services/AuthentificationService.ts";
 import CSSButton from "../CSS/CSS-button.ts";
 import CSSInput from "../CSS/CSS-input.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import TaskService from "../../services/TaskService.ts";
 
 const AddTask = () => {
     const idUser = cookiesConfiguration.getCookie("login");
@@ -15,7 +14,7 @@ const AddTask = () => {
     useEffect(() => {
         if(idUser)
             getUserTask(Number(idUser));
-        if(!cookiesConfiguration.getCookie("log in"))
+        if(!cookiesConfiguration.getCookie("login"))
             navigate("/");
     }, [idUser, navigate]);
 
@@ -35,8 +34,13 @@ const AddTask = () => {
             console.log("non non non");
             return;
         }
-        SecurityService.getUserData(id_user)
+        TaskService.getUserData(id_user)
             .then((response: AxiosResponse) => {
+                if(response.data == "") {
+                    setAllTheTasks(null);
+                    return;
+                }
+
                 console.log("getUsertask, addtask : ")
                 console.log(response.data.taskName);
                 setAllTheTasks({
@@ -74,18 +78,29 @@ const AddTask = () => {
             return;
         }
 
-        let size: number = 0;
-        while(allTheTasks.taskName[size.toString()] !== undefined) {
-            size +=1;
+        let listToSend: TaskToSend = allTheTasks;
+
+        if(allTheTasks == null ){
+            listToSend = {
+                id: id_user,
+                taskName: {0: inputName},
+                taskDate: {0: new Date().toLocaleString()},
+                taskAchievement: {0: [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]},
+                taskDiscipline: {0: selectedDiscipline},
+            }
         }
+        else {
+            let size: number = 0;
+            while(allTheTasks.taskName[size.toString()] !== undefined) {
+                size +=1;
+            }
 
-        const listToSend: TaskToSend = allTheTasks;
-        listToSend.taskName[size.toString()] = inputName;
-        listToSend.taskDiscipline[size.toString()] = selectedDiscipline;
-        listToSend.taskDate[size.toString()] = new Date().toLocaleString();
-        listToSend.taskAchievement[size.toString()] = [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]
-
-        TaskDataService.createUserTask(listToSend)
+            listToSend.taskName[size.toString()] = inputName;
+            listToSend.taskDiscipline[size.toString()] = selectedDiscipline;
+            listToSend.taskDate[size.toString()] = new Date().toLocaleString();
+            listToSend.taskAchievement[size.toString()] = [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]
+        }
+        TaskService.createUserTask(listToSend)
             .then((response: AxiosResponse) => {
                 console.log("create User Task, add task : ")
                 console.debug(response);

@@ -32,10 +32,39 @@ const ListTaskToITaskData = (listTask: Array<ListTask>, idUser: number) => {
     return listITaskData;
 };
 
+const TaskToSendToListTask = (taskToSend: TaskToSend) => {
+    if(taskToSend == null) {
+        return null;
+    }
+
+    const initializationTaskList: Array<ListTask> = [];
+
+    let i = 0;
+
+    while(taskToSend.taskName[i] !== undefined) {
+        i++;
+    }
+
+    for(let m = 0; m<i; m++) {
+        initializationTaskList.push({
+                taskAchievement: taskToSend.taskAchievement[m],
+                id: taskToSend.id,
+                index: m,
+                taskName: taskToSend.taskName[m],
+                taskDiscipline: taskToSend.taskDiscipline[m],
+                taskDate: taskToSend.taskDate[m]
+            }
+        )
+    }
+
+    return initializationTaskList;
+}
+
 
 
 const Convert = {
     ListTaskToITaskData,
+    TaskToSendToListTask,
 };
 
 export default Convert;

@@ -1,11 +1,12 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Discipline, TaskToSend} from "../../types/Task.ts";
-import TaskDataService from "../../services/AuthentificationService.ts";
+import {Discipline, ListTask, TaskToSend} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import CSSInput from "../CSS/CSS-input.ts";
 import CSSButton from "../CSS/CSS-button.ts";
 import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import Convert from "../components/Convert.ts";
+import TaskService from "../../services/TaskService.ts";
 
 const Task = () => {
     const { idTask }= useParams();
@@ -22,9 +23,14 @@ const Task = () => {
     // const [currentTask, setCurrentTask] = useState<ITaskData>(initialTaskState);
     const [message, setMessage] = useState<string>("");
 
+    useEffect(() => {
+        if(idUser)
+            getTask(Number(idUser));
+    }, [idUser]);
+
     // get method to have the task
     const getTask = (id: number) => {
-        TaskDataService.getUserData(id)
+        TaskService.getUserData(id)
             .then((response: AxiosResponse) => {
                 setInputName(response.data.taskName[idTask]);
                 setSelectedDiscipline(response.data.taskDiscipline[idTask]);
@@ -44,10 +50,7 @@ const Task = () => {
             });
     };
 
-    useEffect(() => {
-        if(idUser)
-            getTask(Number(idUser));
-    }, [getTask, idUser]);
+
 
 
     const updateTutorial = () => {
@@ -67,7 +70,7 @@ const Task = () => {
         taskToSend.taskName[idTask?.toString()] = inputName;
         taskToSend.taskDiscipline[idTask?.toString()] = selectedDiscipline;
 
-        TaskDataService.updateTask(taskToSend)
+        TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
                 console.log("update task : ");
                 console.debug(response);
@@ -78,17 +81,63 @@ const Task = () => {
             });
     };
 
-    const deleteTutorial = () => {
-        TaskDataService.deleteTest(allTheTasks, Number(idTask))
+    const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
+        console.log(taskToSend);
+        TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
-                console.log("delete : ");
-                console.log(response.data);
-                navigate("/");
+                // console.debug(response.data.taskAchievement);
+                if(method == "delete") {
+                    navigate("/");
+                }
             })
             .catch((e: Error) => {
+                console.log("erreur");
                 console.log(e);
             });
     };
+
+    const deleteTutorial = () => {
+        const listAllTheTasks: Array<ListTask> | null = Convert.TaskToSendToListTask(allTheTasks);
+
+        console.log("taskTosEnd");
+
+        if(listAllTheTasks?.length > 1) {
+            const taskToSend: TaskToSend = {
+                id: Number(idUser),
+                taskName: {0: allTheTasks.taskName[0]},
+                taskAchievement: {0: allTheTasks.taskAchievement[0]},
+                taskDiscipline: {0: allTheTasks.taskDiscipline[0]},
+                taskDate: {0: allTheTasks.taskDate[0]}
+            }
+
+            let m = 0;
+            for(let i =0; i<listAllTheTasks?.length; i++) {
+                if(i !== Number(idTask)) {
+                    taskToSend.taskName[m] = allTheTasks.taskName[i];
+                    taskToSend.taskDate[m] = allTheTasks.taskDate[i];
+                    taskToSend.taskDiscipline[m] = allTheTasks.taskDiscipline[i];
+                    taskToSend.taskAchievement[m] = allTheTasks.taskAchievement[i];
+
+                    m++;
+                }
+            }
+            console.log(taskToSend);
+            serviceTaskList(taskToSend, "delete");
+        }
+        else {
+            const taskToSend = {
+                id: Number(idUser),
+                taskName: {},
+                taskDiscipline: {},
+                taskAchievement: {},
+                taskDate: {}
+            };
+            console.log(taskToSend);
+            serviceTaskList(taskToSend, "delete");
+        }
+    };
+
+
 
     return (
         <div className="taskApp large-container-2">

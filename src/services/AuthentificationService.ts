@@ -11,30 +11,6 @@ const signIn = (data: ISignInData) => {
     return http.post<ISignInData>("/auth/signin", data);
 }
 
-const getAllUserData = () => {
-    return http.get<Array<ITaskData>>("/auth/tasks");
-}
-
-const getUserData = (id: number) => {
-    return http.get<ITaskData>(`/auth/tasks/${id}`);
-}
-
-const getIdByUsername = (username: string) => {
-    return http.get<number>(`/auth/id/${username}`);
-}
-
-const createUserTask = (data: any) => {
-    return http.post<ITaskData>("/auth/create", data);
-}
-
-const deleteTest = (data: any, idTask: number) => {
-    return http.post<ITaskData>(`auth/delete/${idTask}`, data);
-}
-
-const updateTask = (data: any) => {
-    return http.post<ITaskData>("auth/update", data);
-}
-
 const deleteToken = (id: number) => {
     return http.post<ITaskData>("/auth/deletetoken", id);
 }
@@ -42,12 +18,6 @@ const deleteToken = (id: number) => {
 const SecurityService = {
     signUp,
     signIn,
-    getAllUserData,
-    getUserData,
-    createUserTask,
-    deleteTest,
-    updateTask,
-    getIdByUsername,
     deleteToken,
 };
 

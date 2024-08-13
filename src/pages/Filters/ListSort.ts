@@ -17,8 +17,7 @@ const allTheTasksToShow = (listTask: Array<ListTask>) => {
 };
 
 const deleteTask = (listTask: Array<ListTask>,
-                    nameTask: string,
-                    dateTask: string,
+                    index: number,
                     idUser: number,
                     setAllTheTasks: (value: null | TaskToSend) => void,
                     setListTask: (value: null | Array<ListTask>) => void,
@@ -26,8 +25,17 @@ const deleteTask = (listTask: Array<ListTask>,
                     ) => {
     const sortedList: ListTask[] = new Array<ListTask>();
 
+    if(listTask.length == 1) {
+        return {
+            id: idUser,
+            taskName: {},
+            taskDiscipline: {},
+            taskAchievement: {}, taskDate: {}
+        };
+    }
+
     for(let i =0; i<listTask.length; i++) {
-        if(listTask[i].taskName != nameTask && listTask[i].taskDate != dateTask) {
+        if(i !== index) {
             sortedList.push(listTask[i]);
         }
     }

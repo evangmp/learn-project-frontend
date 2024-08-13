@@ -17,7 +17,7 @@ const AccountInitialisation = (id: number) => {
         .catch((e: Error) => {
             console.log(e);
         });
-}
+};
 
 const Method = {
     AccountInitialisation,
