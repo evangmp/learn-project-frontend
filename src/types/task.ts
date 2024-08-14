@@ -1,0 +1,29 @@
+export type Discipline = "physics" | "mathematics";
+
+export type AchievementTable = [number, number, number, number, number, number, number, number, number, number]
+
+export interface ITaskData {
+    id?: number,
+    taskName: Map<number, string>,
+    taskDiscipline: Map<number, Discipline>,
+    taskAchievement: Map<number, [number, number, number, number, number, number, number, number, number, number]>,
+    taskDate: Map<number, string>,
+}
+
+export interface TaskToSend {
+    id?: number,
+    taskName: {0: string},
+    taskDiscipline: {0: Discipline},
+    taskAchievement: {0: AchievementTable},
+    taskDate: {0: string},
+
+}
+
+export interface ListTask {
+    id?: number,
+    index: number,
+    taskName: string,
+    taskDiscipline: Discipline,
+    taskAchievement: AchievementTable,
+    taskDate: string,
+}
