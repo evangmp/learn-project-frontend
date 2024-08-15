@@ -1,4 +1,4 @@
-import {ListTask} from "../../types/task.ts";
+import {ListTask} from "../types/task.ts";
 import DateFunction from "./DateFunctions.ts";
 
 const SetShowTaskOrNo = (task: ListTask, dateDay: Date) => {

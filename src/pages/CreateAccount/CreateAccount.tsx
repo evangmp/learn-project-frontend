@@ -2,11 +2,10 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import {useNavigate} from "react-router-dom";
 import SecurityService from "../../services/AuthentificationService.ts";
-import {AxiosResponse} from "axios";
-import Method from "../../services/Method.ts";
-import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import CSSInput from "../CSS/CSS-input.ts";
-import CSSButton from "../CSS/CSS-button.ts";
+import {AxiosError, AxiosResponse} from "axios";
+import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
+import CSSInput from "../../CSS/CSS-input.ts";
+import CSSButton from "../../CSS/CSS-button.ts";
 
 const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
@@ -18,7 +17,7 @@ const CreateAccount = () => {
     }, [navigate]);
 
     // initialize the body to create the username/password variables
-    const initialAccountState = {
+    const initialAccountState: IAccountData = {
         username: "",
         password: "",
         email: "",
@@ -56,14 +55,12 @@ const CreateAccount = () => {
                     email: response.data.email,
                     role: response.data.role,
                 });
+                console.log("reponse data sign up : ");
                 console.log(response.data);
-                //setMessage("working");
-                Method.AccountInitialisation(response.data);
                 navigate("/connection");
             })
-            .catch((e: AxiosResponse) => {
-                setMessage("probleme"); // e.response.data.message
-                console.log(e);
+            .catch((e: AxiosError) => {
+                setMessage(e.response.data.message);
                 return;
             });
     };

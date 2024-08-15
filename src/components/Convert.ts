@@ -1,5 +1,6 @@
-import {ListTask, TaskToSend} from "../../types/task.ts";
+import {ListTask, TaskToSend} from "../types/task.ts";
 
+// to convert a ListTask data type => TaskToSend type
 const ListTaskToITaskData = (listTask: Array<ListTask>, idUser: number) => {
     if(listTask.length == 0) {
         return null;
@@ -32,6 +33,7 @@ const ListTaskToITaskData = (listTask: Array<ListTask>, idUser: number) => {
     return listITaskData;
 };
 
+// to convert a TaskToSend data type => ListTask type
 const TaskToSendToListTask = (taskToSend: TaskToSend) => {
     if(taskToSend == null) {
         return null;

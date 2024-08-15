@@ -1,7 +1,7 @@
 import React, {CSSProperties, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import CSSButton from "../CSS/CSS-button.ts";
+import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
+import CSSButton from "../../CSS/CSS-button.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
 

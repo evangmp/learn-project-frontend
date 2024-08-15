@@ -2,10 +2,10 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Discipline, ListTask, TaskToSend} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
-import CSSInput from "../CSS/CSS-input.ts";
-import CSSButton from "../CSS/CSS-button.ts";
-import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import Convert from "../components/Convert.ts";
+import CSSInput from "../../CSS/CSS-input.ts";
+import CSSButton from "../../CSS/CSS-button.ts";
+import cookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
+import Convert from "../../components/Convert.ts";
 import TaskService from "../../services/TaskService.ts";
 
 const Task = () => {

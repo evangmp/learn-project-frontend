@@ -1,7 +1,7 @@
 import {ListTask, TaskToSend} from "../../types/task.ts";
-import SetShowTaskOrNo from "../Date/SetShowTaskOrNo.ts";
-import Convert from "../components/Convert.ts";
-import SetAchievement from "../Date/SetAchievement.ts";
+import SetShowTaskOrNo from "../../Date/SetShowTaskOrNo.ts";
+import Convert from "../../components/Convert.ts";
+import SetAchievement from "../../Date/SetAchievement.ts";
 import SwitchFilters from "./SwitchFilters.ts";
 
 const allTheTasksToShow = (listTask: Array<ListTask>) => {

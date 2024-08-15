@@ -3,9 +3,9 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import IAccountData from "../../types/Account.ts";
 import SecurityService from "../../services/AuthentificationService.ts";
 import {AxiosResponse} from "axios";
-import CookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
-import CSSInput from "../CSS/CSS-input.ts";
-import CSSButton from "../CSS/CSS-button.ts";
+import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
+import CSSInput from "../../CSS/CSS-input.ts";
+import CSSButton from "../../CSS/CSS-button.ts";
 
 const Connection = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Connection = () => {
     const [message, setMessage] = useState<string>("");
 
     // initialize the body to create the username/password variables
-    const initialAccountState = {
+    const initialAccountState: IAccountData = {
         username: "",
         password: "",
         email: "",

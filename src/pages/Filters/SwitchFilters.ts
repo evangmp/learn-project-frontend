@@ -1,5 +1,5 @@
 import {ListTask} from "../../types/task.ts";
-import setAchievement from "../Date/SetAchievement.ts";
+import setAchievement from "../../Date/SetAchievement.ts";
 
 // take as an argument a list and return only the task that are not checked in the list
 const activeTasks = (listTask: Array<ListTask>) => {

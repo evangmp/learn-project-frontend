@@ -2,15 +2,15 @@ import React, {useEffect, useState} from "react";
 import {ListTask, TaskToSend} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
-import SetAchievement from "../Date/SetAchievement.ts";
+import SetAchievement from "../../Date/SetAchievement.ts";
 import Filters from "../Filters/Filters.tsx";
 import ListSort from "../Filters/ListSort.ts";
-import CSSTitle from "../CSS/CSS-title.ts";
-import CSSList from "../CSS/CSS-list.ts";
-import CSSInput from "../CSS/CSS-input.ts";
-import CSSDiv from "../CSS/CSS-div.ts";
-import CSSButton from "../CSS/CSS-button.ts";
-import cookiesConfiguration from "../Cookies/CookiesConfiguration.ts";
+import CSSTitle from "../../CSS/CSS-title.ts";
+import CSSList from "../../CSS/CSS-list.ts";
+import CSSInput from "../../CSS/CSS-input.ts";
+import CSSDiv from "../../CSS/CSS-div.ts";
+import CSSButton from "../../CSS/CSS-button.ts";
+import cookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
 import TaskService from "../../services/TaskService.ts";
 
 const TaskList = () => {
