@@ -1,4 +1,4 @@
-import {ListTask, TaskToSend} from "../types/task.ts";
+import {ListTask, Tasks, TaskToSend} from "../types/task.ts";
 
 // to convert a ListTask data type => TaskToSend type
 const ListTaskToITaskData = (listTask: Array<ListTask>, idUser: number) => {
@@ -60,7 +60,32 @@ const TaskToSendToListTask = (taskToSend: TaskToSend) => {
     }
 
     return initializationTaskList;
-}
+};
+
+// to convert a ListTask data type => TaskToSend type
+const ListTaskToITaskData2 = (listTask: Array<ListTask>, idUser: number) => {
+    if(listTask.length == 0) {
+        return null;
+    }
+
+    const listITaskData: Tasks = {
+        id: idUser,
+        taskName: [listTask[0].taskName],
+        taskDiscipline: [listTask[0].taskDiscipline],
+        taskAchievement: [listTask[0].taskAchievement],
+        taskDate: [listTask[0].taskDate],
+    };
+
+    for(let q = 0; q<listTask.length; q++) {
+        listITaskData.taskName.push(listTask[q].taskName);
+        listITaskData.taskDiscipline.push(listTask[q].taskDiscipline);
+        listITaskData.taskAchievement.push(listTask[q].taskAchievement);
+        listITaskData.taskDate.push(listTask[q].taskDate);
+        q++;
+    }
+
+    return listITaskData;
+};
 
 
 

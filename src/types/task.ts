@@ -16,7 +16,6 @@ export interface TaskToSend {
     taskDiscipline: {0: Discipline},
     taskAchievement: {0: AchievementTable},
     taskDate: {0: string},
-
 }
 
 export interface ListTask {
@@ -26,4 +25,12 @@ export interface ListTask {
     taskDiscipline: Discipline,
     taskAchievement: AchievementTable,
     taskDate: string,
+}
+
+export interface Tasks {
+    id?: number,
+    taskName: string[],
+    taskDiscipline : Discipline[],
+    taskAchievement: AchievementTable[],
+    taskDate: string[],
 }
