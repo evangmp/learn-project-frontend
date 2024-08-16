@@ -56,6 +56,7 @@ const AddTask = () => {
             });
     };
 
+    // reset all the fields to create a new task
     const resetInputs = () => {
         setTaskSaved(!taskSaved);
         setSelectedDiscipline(undefined);

@@ -4,6 +4,7 @@ import Convert from "../../components/Convert.ts";
 import SetAchievement from "../../Date/SetAchievement.ts";
 import SwitchFilters from "./SwitchFilters.ts";
 
+// to set all the tasks who need to be show
 const allTheTasksToShow = (listTask: Array<ListTask>) => {
     const sortedList = new Array<ListTask>();
     const date = new Date();
@@ -16,6 +17,7 @@ const allTheTasksToShow = (listTask: Array<ListTask>) => {
     return sortedList;
 };
 
+// delete a task, with the index, and to refresh all the lists
 const deleteTask = (listTask: Array<ListTask>,
                     index: number,
                     idUser: number,
@@ -48,6 +50,7 @@ const deleteTask = (listTask: Array<ListTask>,
     return Convert.ListTaskToITaskData(sortedList, idUser);
 };
 
+// to modify a task and refresh all the lists
 const updateTask = (
     listAllTheTasks: Array<ListTask>,
     listTask: Array<ListTask>,
@@ -76,6 +79,7 @@ const updateTask = (
     setAllTheTasks(Convert.ListTaskToITaskData(listAllTheTasks, listTask[0].id));
 };
 
+// when a discipline filter is used
 const disciplineTask = (
     listAllTheTasks: Array<ListTask>,
     setListTasks: (value: null | Array<ListTask>) => void,
@@ -87,6 +91,7 @@ const disciplineTask = (
     return sortedList;
 };
 
+// when a completed/active filter is used
 const timeTask = (
     listAllTheTasks: Array<ListTask>,
     setListTasks: (value: null | Array<ListTask>) => void,

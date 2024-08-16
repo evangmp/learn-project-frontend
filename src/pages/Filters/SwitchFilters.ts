@@ -1,7 +1,7 @@
 import {ListTask} from "../../types/task.ts";
 import setAchievement from "../../Date/SetAchievement.ts";
 
-// take as an argument a list and return only the task that are not checked in the list
+// take as an argument a list and return only the task(s) that are not checked in the list
 const activeTasks = (listTask: Array<ListTask>) => {
     const sortedList: ListTask[] = new Array<ListTask>();
 
@@ -13,7 +13,7 @@ const activeTasks = (listTask: Array<ListTask>) => {
     return sortedList;
 };
 
-// take as an argument a list and return only the task that are checked in the list
+// take as an argument a list and return only the task(s) that are checked in the list
 const completedTasks = (listTask: Array<ListTask>) => {
     const sortedList: ListTask[] = new Array<ListTask>();
 
@@ -25,6 +25,7 @@ const completedTasks = (listTask: Array<ListTask>) => {
     return sortedList;
 };
 
+// discipline filter : first, check the time (completed or not) filter and then set the list with the discipline
 const disciplineFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
     const sortedList: ListTask[] = new Array<ListTask>();
     let preSortedList: ListTask[] = new Array<ListTask>();
@@ -59,6 +60,7 @@ const disciplineFilter = (discipline: string, time: string, listAllTheTasks: Lis
     return sortedList;
 }
 
+//
 const timeFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
     let sortedList: ListTask[] = new Array<ListTask>();
 

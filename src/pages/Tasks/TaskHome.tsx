@@ -5,11 +5,11 @@ import Task from "./Task.tsx";
 import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
 
-
 const TasksHome = () => {
     const navigate = useNavigate();
     const [login, setLogin] = useState<boolean>(false);
 
+    // to see if the user is connected or no
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
             setLogin(true);

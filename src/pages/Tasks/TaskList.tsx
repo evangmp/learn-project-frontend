@@ -20,18 +20,18 @@ const TaskList = () => {
     // to refresh the list when a task is deleted
     const [refreshList, setRefreshList] = useState<boolean>(false);
 
-    // form ready to be sent to DB
+    // ready to be sent in the DB
     const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
     // to map and print tasks
-    const [listTasks, setListTasks] = useState<Array<ListTask>>(null);
-    const [listAllTheTasks, setListAllTheTasks] = useState<Array<ListTask>>(null);
+    const [listTasks, setListTasks] = useState<Array<ListTask>>([]);
+    const [listAllTheTasks, setListAllTheTasks] = useState<Array<ListTask>>([]);
 
-    // filter button setting
+    // filter buttons setting
     const [timeFilter, setTimeFilter] = useState<string>("All");
     const [disciplineFilter, setDisciplineFilter] = useState<string>("None");
 
-    // when its run call the const to have all the tasks and setDate (if not date is null)
+    // to get all the tasks and see if the list needs to be refreshed (because updated)
     useEffect(() => {
         if(idUser)
             getTask(Number(idUser));
@@ -48,18 +48,9 @@ const TaskList = () => {
             .then((response: AxiosResponse) => {
                 console.log(response);
                 if(response.data == "") {
-                    setListTasks(null);
+                    setListTasks([]);
                     return;
                 }
-                /*
-                if(response.data.taskName[0] == undefined) {
-                    console.log("probleme çava");
-                    setListTasks(null);
-                    return;
-                }
-
-                 */
-
 
                 let i: number = 0;
                 const initializationTaskList: Array<ListTask> = [];
@@ -92,10 +83,11 @@ const TaskList = () => {
             });
     };
 
-    // set default checked or no
+    // set default checked or no for each tasks
     const defaultChecked = (taskDate: string, taskAchievement: number[]) => {
         return SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
     };
+
 
     const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
         console.log(taskToSend);
@@ -125,7 +117,7 @@ const TaskList = () => {
     const updateFilter = (typeFilter: string) => {
         setTimeFilter(typeFilter);
 
-        const sortedList: ListTask[] = ListSort.timeTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
+        const sortedList: ListTask[] = ListSort.disciplineTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
         setListTasks(sortedList);
     };
 

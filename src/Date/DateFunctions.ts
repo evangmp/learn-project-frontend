@@ -11,7 +11,7 @@ const sortDate = (dateToSort: string) => {
 };
 
 // from a dictionary, extract a first number and a second, or just a number (for 1 to 9 and after 10 to 12 or 30, etc)
-const convertDicToNumber = (dicActual: any, first: number, second: number) => { // problem
+const convertDicToNumber = (dicActual: string[], first: number, second: number) => { // problem
     if(Number(dicActual[first])===0) {
         return Number(dicActual[second])
     }
@@ -54,6 +54,7 @@ const switchToLenghtYear = (numberDay: number, numberMonth: number, leapYear: nu
         case 12:
             return (numberDay + 334 + leapYear); // december (31)
     }
+    return 0; // will never be reach but React
 };
 
 // if the difference between the actual day and the day of the task is interesting to show her or no

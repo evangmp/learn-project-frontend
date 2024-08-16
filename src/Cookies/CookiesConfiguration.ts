@@ -1,5 +1,5 @@
 // Function to set a cookie
-const setCookie = (name, value, days) => {
+const setCookie = (name: string, value: string, days: number) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + days);
 
@@ -7,7 +7,7 @@ const setCookie = (name, value, days) => {
 };
 
 // Function to get a cookie value by name
-const getCookie = (name) => {
+const getCookie = (name: string) => {
     const cookies = document.cookie
         .split("; ")
         .find((row) => row.startsWith(`${name}=`));
@@ -16,7 +16,7 @@ const getCookie = (name) => {
 };
 
 // Function to delete a cookie by name
-const deleteCookie = (name) => {
+const deleteCookie = (name: string) => {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
 };
 

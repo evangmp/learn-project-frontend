@@ -1,6 +1,6 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Discipline, ListTask, TaskToSend} from "../../types/Task.ts";
+import {Discipline, ListTask, Tasks, TaskToSend} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import CSSInput from "../../CSS/CSS-input.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
@@ -9,7 +9,7 @@ import Convert from "../../components/Convert.ts";
 import TaskService from "../../services/TaskService.ts";
 
 const Task = () => {
-    const { idTask }= useParams();
+    const {idTask} = useParams();
     const idUser = cookiesConfiguration.getCookie("login");
     const navigate = useNavigate();
 
@@ -20,7 +20,6 @@ const Task = () => {
     // to save all the tasks associate with the user id (and then update or delete a task)
     const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
-    // const [currentTask, setCurrentTask] = useState<ITaskData>(initialTaskState);
     const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
@@ -50,9 +49,7 @@ const Task = () => {
             });
     };
 
-
-
-
+    // method to update the task
     const updateTutorial = () => {
         // early return
         if(selectedDiscipline == null) {
@@ -81,6 +78,7 @@ const Task = () => {
             });
     };
 
+    // update method for delete task
     const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
         console.log(taskToSend);
         TaskService.updateTask(taskToSend)
@@ -96,6 +94,7 @@ const Task = () => {
             });
     };
 
+    // to delete a task
     const deleteTutorial = () => {
         const listAllTheTasks: Array<ListTask> | null = Convert.TaskToSendToListTask(allTheTasks);
 
@@ -136,8 +135,6 @@ const Task = () => {
             serviceTaskList(taskToSend, "delete");
         }
     };
-
-
 
     return (
         <div className="taskApp large-container-2">

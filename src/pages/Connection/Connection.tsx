@@ -10,6 +10,7 @@ import CSSButton from "../../CSS/CSS-button.ts";
 const Connection = () => {
     const navigate = useNavigate();
 
+    // check if : there is a cookie => user is already connected
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
             navigate("/");
@@ -24,7 +25,6 @@ const Connection = () => {
         email: "",
         role: ["mod", "user"],
     };
-
     const [account, setAccount] = useState<IAccountData>(initialAccountState);
 
     // event active when something is type in username/password input

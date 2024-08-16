@@ -11,7 +11,7 @@ const Home = () => {
 
     const [logout, setLogout] = useState(false);
 
-
+    // see if there is already a cookie or if the user is connected
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
             setProfile(true);

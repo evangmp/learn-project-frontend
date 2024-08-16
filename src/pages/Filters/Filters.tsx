@@ -1,3 +1,4 @@
+// default button filter
 const defaultFilter = (
     typeFilter: string,
     characterFilter: string,

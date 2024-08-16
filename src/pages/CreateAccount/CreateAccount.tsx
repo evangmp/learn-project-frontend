@@ -11,6 +11,7 @@ const CreateAccount = () => {
     const [message, setMessage] = useState<string>("");
     const navigate = useNavigate();
 
+    // check if : there is a cookie => user is already connected
     useEffect(() => {
         if(CookiesConfiguration.getCookie("login"))
             navigate("/");
@@ -33,6 +34,7 @@ const CreateAccount = () => {
         setAccount({ ...account, [name]: value });
     };
 
+    // post method to register the user
     const saveAccount = () => {
         if (account.password === "" || account.username === "" || account.email === "") {
             console.error("e");
