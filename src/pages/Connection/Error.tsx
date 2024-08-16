@@ -11,11 +11,11 @@ const Error = () => {
         console.log(date);
 
         const listToSend: Tasks = {
-            id: 3,
-            taskName: ["prout", "test"],
-            taskDiscipline: ["mathematics", "physics"],
-            taskDate: ["2024-08-15T00:00:00Z", "2024-08-14T22:05:38Z"],
-            taskAchievement: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+            id: 2,
+            taskName: ["encoreencore", "nonnon"],
+            taskDiscipline: ["mathematics", "mathematics"],
+            taskDate: [date, "2024-08-14T22:05:38Z"],
+            taskAchievement: [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
         };
 
         TaskService.createUserTask(listToSend)
@@ -31,6 +31,16 @@ const Error = () => {
 
     const button = () => {
         sendData(JSON.stringify(new Date().toLocaleString()))
+    };
+
+    const getData = () => {
+        TaskService.getUserData(2)
+            .then((response: AxiosResponse) => {
+                console.log(response.data);
+            })
+            .catch((e: Error) => {
+                console.log(e);
+            });
     }
 
 
@@ -45,6 +55,12 @@ const Error = () => {
             <div>
                 <button onClick={() => button()}>
                     test
+                </button>
+            </div>
+
+            <div>
+                <button onClick={()=> getData()}>
+                    get data
                 </button>
             </div>
 

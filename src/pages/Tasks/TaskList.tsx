@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ListTask, TaskToSend} from "../../types/Task.ts";
+import {ListTask, Tasks} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
 import SetAchievement from "../../Date/SetAchievement.ts";
@@ -19,9 +19,6 @@ const TaskList = () => {
 
     // to refresh the list when a task is deleted
     const [refreshList, setRefreshList] = useState<boolean>(false);
-
-    // ready to be sent in the DB
-    const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
 
     // to map and print tasks
     const [listTasks, setListTasks] = useState<Array<ListTask>>([]);
@@ -68,14 +65,6 @@ const TaskList = () => {
 
                 setListAllTheTasks(initializationTaskList);
                 setListTasks(ListSort.allTheTasksToShow(initializationTaskList));
-
-                setAllTheTasks({
-                    id: idUser,
-                    taskName: response.data.taskName,
-                    taskDiscipline: response.data.taskDiscipline,
-                    taskAchievement: response.data.taskAchievement,
-                    taskDate: response.data.taskDate,
-                });
             })
             .catch((e: Error) => {
                 console.log(e.message);
@@ -89,11 +78,11 @@ const TaskList = () => {
     };
 
 
-    const serviceTaskList = (taskToSend: TaskToSend, method: string) => {
+    const serviceTaskList = (taskToSend: Tasks | null, method: string) => {
         console.log(taskToSend);
         TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
-                // console.debug(response.data.taskAchievement);
+                console.debug(response.data.taskAchievement);
                 if(method == "delete") {
                     setRefreshList(true);
                     navigate("/");
@@ -106,12 +95,13 @@ const TaskList = () => {
     };
 
     const deleteTask = (task: ListTask) => {
-        serviceTaskList(ListSort.deleteTask(listAllTheTasks, task.index, Number(idUser), setAllTheTasks, setListTasks, setListAllTheTasks), "delete");
+        const listToSend: Tasks | null = ListSort.deleteTask(listAllTheTasks, task.index, Number(idUser), setListTasks, setListAllTheTasks)
+        serviceTaskList(listToSend, "delete");
     };
 
     const updateTask = (task: ListTask) => {
-        ListSort.updateTask(listAllTheTasks, listTasks, task, setAllTheTasks, setListTasks, setListAllTheTasks);
-        serviceTaskList(allTheTasks, "");
+        const listToSend: Tasks | null = ListSort.updateTask(listAllTheTasks, listTasks, task, setListTasks, setListAllTheTasks);
+        serviceTaskList(listToSend, "");
     };
 
     const updateFilter = (typeFilter: string) => {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Discipline, TaskToSend} from "../../types/Task.ts";
+import {Discipline, Tasks} from "../../types/Task.ts";
 import {useNavigate} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import CSSButton from "../../CSS/CSS-button.ts";
@@ -26,7 +26,7 @@ const AddTask = () => {
 
     // initialization for setAllTheTasks
     const id_user: number = Number(idUser);
-    const [allTheTasks, setAllTheTasks] = useState<TaskToSend>(null);
+    const [allTheTasks, setAllTheTasks] = useState<Tasks>(null);
 
     // get method to have all the tasks
     const getUserTask = (id_user: number) => {
@@ -79,27 +79,22 @@ const AddTask = () => {
             return;
         }
 
-        let listToSend: TaskToSend = allTheTasks;
+        let listToSend: Tasks = allTheTasks;
 
         if(allTheTasks == null ){
             listToSend = {
                 id: id_user,
-                taskName: {0: inputName},
-                taskDate: {0: new Date().toLocaleString()},
-                taskAchievement: {0: [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]},
-                taskDiscipline: {0: selectedDiscipline},
+                taskName: [inputName],
+                taskDate: [new Date().toLocaleString()],
+                taskAchievement: [[0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]],
+                taskDiscipline: [selectedDiscipline],
             }
         }
         else {
-            let size: number = 0;
-            while(allTheTasks.taskName[size.toString()] !== undefined) {
-                size +=1;
-            }
-
-            listToSend.taskName[size.toString()] = inputName;
-            listToSend.taskDiscipline[size.toString()] = selectedDiscipline;
-            listToSend.taskDate[size.toString()] = new Date().toLocaleString();
-            listToSend.taskAchievement[size.toString()] = [0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]
+            listToSend.taskName.push(inputName);
+            listToSend.taskDiscipline.push(selectedDiscipline);
+            listToSend.taskDate.push(new Date().toLocaleString());
+            listToSend.taskAchievement.push([0, 0, 0, 0, 0, 0,0 ,0 ,0, 0]);
         }
         TaskService.createUserTask(listToSend)
             .then((response: AxiosResponse) => {

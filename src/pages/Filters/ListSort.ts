@@ -1,4 +1,4 @@
-import {ListTask, TaskToSend} from "../../types/task.ts";
+import {ListTask} from "../../types/task.ts";
 import SetShowTaskOrNo from "../../Date/SetShowTaskOrNo.ts";
 import Convert from "../../components/Convert.ts";
 import SetAchievement from "../../Date/SetAchievement.ts";
@@ -21,7 +21,6 @@ const allTheTasksToShow = (listTask: Array<ListTask>) => {
 const deleteTask = (listTask: Array<ListTask>,
                     index: number,
                     idUser: number,
-                    setAllTheTasks: (value: null | TaskToSend) => void,
                     setListTask: (value: null | Array<ListTask>) => void,
                     setListAllTheTasks: (value: null | Array<ListTask>) => void
                     ) => {
@@ -30,24 +29,27 @@ const deleteTask = (listTask: Array<ListTask>,
     if(listTask.length == 1) {
         return {
             id: idUser,
-            taskName: {},
-            taskDiscipline: {},
-            taskAchievement: {}, taskDate: {}
+            taskName: [],
+            taskDiscipline: [],
+            taskAchievement: [],
+            taskDate: []
         };
     }
 
-    for(let i =0; i<listTask.length; i++) {
+    for(let i = 0; i < listTask.length; i++) {
         if(i !== index) {
             sortedList.push(listTask[i]);
+
         }
     }
 
     setListAllTheTasks(sortedList);
     setListTask(allTheTasksToShow(sortedList));
 
-    setAllTheTasks(Convert.ListTaskToITaskData(sortedList, idUser));
+    console.log("Convert.ListTaskToTasks(sortedList, idUser)");
+    console.log(Convert.ListTaskToTasks(sortedList, idUser));
 
-    return Convert.ListTaskToITaskData(sortedList, idUser);
+    return Convert.ListTaskToTasks(sortedList, idUser);
 };
 
 // to modify a task and refresh all the lists
@@ -55,13 +57,12 @@ const updateTask = (
     listAllTheTasks: Array<ListTask>,
     listTask: Array<ListTask>,
     task: ListTask,
-    setAllTheTasks: (value: null | TaskToSend) => void,
     setListTasks: (value: null | Array<ListTask>) => void, // Array<Task>
     setListAllTheTasks: (value: null | Array<ListTask>) => void) => {
 
     const state: number[] = SetAchievement.taskSetAchievement(task.taskDate, task.taskAchievement);
 
-    for(let i =0; i<listTask.length; i++) {
+    for(let i =0; i < listTask.length; i++) {
         if(listTask[i] == task) {
             listTask[i].taskAchievement = state;
         }
@@ -76,7 +77,7 @@ const updateTask = (
     setListAllTheTasks(listAllTheTasks);
     setListTasks(listTask);
 
-    setAllTheTasks(Convert.ListTaskToITaskData(listAllTheTasks, listTask[0].id));
+    return Convert.ListTaskToTasks(listAllTheTasks, listTask[0].id);
 };
 
 // when a discipline filter is used
@@ -101,7 +102,7 @@ const timeTask = (
     const sortedList: Array<ListTask> = SwitchFilters.timeFilter(discipline, timeFilter, allTheTasksToShow(listAllTheTasks));
     setListTasks(sortedList);
     return sortedList;
-}
+};
 
 const ListSort = {
     deleteTask,
