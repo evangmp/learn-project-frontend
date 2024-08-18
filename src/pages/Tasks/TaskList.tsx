@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {ListTask, Tasks} from "../../types/Task.ts";
+import {AchievementTable, DateType, ListTask, Tasks} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
-import SetAchievement from "../../Date/SetAchievement.ts";
 import Filters from "../Filters/Filters.tsx";
 import ListSort from "../Filters/ListSort.ts";
 import CSSTitle from "../../CSS/CSS-title.ts";
@@ -12,6 +11,10 @@ import CSSDiv from "../../CSS/CSS-div.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
 import cookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
 import TaskService from "../../services/TaskService.ts";
+import DateTypeCalculation from "../../Date/DateTypeCalculation.ts";
+import Convert from "../../components/Convert.ts";
+import TypeBase from "../../components/TypeBase.ts";
+import SwitchFilters from "../Filters/SwitchFilters.ts";
 
 const TaskList = () => {
     const idUser: string | null = cookiesConfiguration.getCookie("login");
@@ -28,6 +31,9 @@ const TaskList = () => {
     const [timeFilter, setTimeFilter] = useState<string>("All");
     const [disciplineFilter, setDisciplineFilter] = useState<string>("None");
 
+    // initialize DateTable
+    const [DateTable, setDateTable] = useState<DateType>(TypeBase.DateBase());
+
     // to get all the tasks and see if the list needs to be refreshed (because updated)
     useEffect(() => {
         if(idUser)
@@ -43,6 +49,9 @@ const TaskList = () => {
     const getTask = (idUser: number) => { // idUser "bonjour"
         TaskService.getUserData(idUser)
             .then((response: AxiosResponse) => {
+
+                console.log(response.data);
+
                 if(response.data == "") {
                     setListTasks([]);
                     return;
@@ -62,8 +71,15 @@ const TaskList = () => {
                     i++;
                 }
 
+                const tableDate: DateType = DateTypeCalculation(initializationTaskList)
+
+                setDateTable(tableDate);
+
+                console.log("tableDate");
+                console.log(tableDate);
+
                 setListAllTheTasks(initializationTaskList);
-                setListTasks(ListSort.allTheTasksToShow(initializationTaskList));
+                setListTasks(ListSort.taskToShow(tableDate, initializationTaskList));
             })
             .catch((e: Error) => {
                 console.log("Error in TaskList GetUserData method : ");
@@ -72,13 +88,16 @@ const TaskList = () => {
     };
 
     // set default checked or no for each tasks
-    const defaultChecked = (taskDate: string, taskAchievement: number[]) => {
-        return SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
+    const defaultChecked = (taskIndex: number) => {
+        return DateTable?.defaultChecked[taskIndex];
     };
 
     const serviceTaskList = (taskToSend: Tasks | null, method: string) => {
         TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
+                console.log("response.data lorsque update/delete task");
+                console.log(response.data);
+
                 if(method == "delete") {
                     setRefreshList(true);
                     navigate("/");
@@ -91,24 +110,62 @@ const TaskList = () => {
     };
 
     const deleteTask = (task: ListTask) => {
-        const listToSend: Tasks | null = ListSort.deleteTask(listAllTheTasks, task.index, Number(idUser), setListTasks, setListAllTheTasks)
+        const sortedList: Array<ListTask> = ListSort.deleteTask(listAllTheTasks, task.index, Number(idUser))
+
+        const listToSend: Tasks | null = Convert.ListTaskToTasks(sortedList, Number(idUser));
+
+        // don't actually really need to update setTable because the page will be relaunched
         serviceTaskList(listToSend, "delete");
     };
 
     const updateTask = (task: ListTask) => {
-        const listToSend: Tasks | null = ListSort.updateTask(listAllTheTasks, listTasks, task, setListTasks, setListAllTheTasks);
+        const updateDate: DateType = DateTable;
+
+        // bring the achievementTable of the actual task
+        const taskAchievementTable : AchievementTable | undefined = updateDate?.taskAchievement[task.index];
+
+        // condition if it is actually 0 or 1 (not checked or checked) and inverse 0 => 1
+        if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 0){
+            taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 1;
+        }
+        else if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 1) {
+            taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 0;
+        }
+        else {console.log("ALERTE MAXIMALE C4EST PAS NORMAL")}
+
+        // replace achievementTable
+        updateDate.taskAchievement[task.index] = taskAchievementTable;
+        // change if it needs to be defaultChecked or not
+        updateDate.defaultChecked[task.index] = !updateDate?.defaultChecked[task.index];
+        setDateTable(updateDate);
+
+        // replace in listTask by the new taskAchievement and send to the service
+        const preListToSend: Array<ListTask> = listAllTheTasks;
+        preListToSend[task.index].taskAchievement = updateDate?.taskAchievement[task.index];
+
+        const listToSend: Tasks | null = Convert.ListTaskToTasks(preListToSend, Number(idUser));
+
+
+        setListAllTheTasks(preListToSend);
+        setListTasks(ListSort.taskToShow(updateDate, preListToSend));
+
         serviceTaskList(listToSend, "");
     };
 
+    // All/completed/active filter
     const updateFilter = (typeFilter: string) => {
         setTimeFilter(typeFilter);
 
-        const sortedList: ListTask[] = ListSort.disciplineTask(listAllTheTasks, setListTasks, disciplineFilter, typeFilter);
+        const sortedList: ListTask[] = SwitchFilters.disciplineFilter(disciplineFilter, typeFilter, listAllTheTasks, DateTable);
         setListTasks(sortedList);
     };
 
+    // discipline filter
     const disciplineUpdateFilter = (discipline: string) => {
-        ListSort.disciplineTask(listAllTheTasks, setListTasks, discipline, timeFilter);
+        setDisciplineFilter(discipline);
+
+        const sortedList: ListTask[] = SwitchFilters.disciplineFilter(discipline, timeFilter, listAllTheTasks, DateTable);
+        setListTasks(sortedList);
     };
 
     const AllFilter: JSX.Element = Filters.defaultFilter(timeFilter, "All", setTimeFilter, updateFilter);
@@ -148,7 +205,7 @@ const TaskList = () => {
                                 >
                                     <div className="checkbox-wrapper-15">
                                         <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSInput.inputList}
-                                               defaultChecked={defaultChecked(task.taskDate, task.taskAchievement)}
+                                               defaultChecked={defaultChecked(task.index)}
                                                onChange={() => {
                                                    updateTask(task);
                                                    //task.taskAchievement = achievementUpdate(task);

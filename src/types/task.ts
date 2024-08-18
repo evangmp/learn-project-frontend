@@ -28,3 +28,10 @@ export interface Tasks {
     taskDate: string[],
 }
 
+export interface DateType {
+    taskIndex: number[],
+    difference: number[],
+    taskAchievement: AchievementTable[],
+    taskAchievementIndex: number[],
+    defaultChecked: boolean[],
+}

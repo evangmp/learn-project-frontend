@@ -14,12 +14,11 @@ const ListTaskToTasks = (listTask: Array<ListTask>, idUser: number) => {
         taskDate: [listTask[0].taskDate],
     };
 
-    for(let q = 1; q<listTask.length; q++) {
+    for(let q = 1; q < listTask.length; q++) {
         listITaskData.taskName.push(listTask[q].taskName);
         listITaskData.taskDiscipline.push(listTask[q].taskDiscipline);
         listITaskData.taskAchievement.push(listTask[q].taskAchievement);
         listITaskData.taskDate.push(listTask[q].taskDate);
-        q++;
     }
 
     return listITaskData;
@@ -48,9 +47,6 @@ const TasksToListTask = (taskToSend: Tasks) => {
 
     return initializationTaskList;
 };
-
-
-
 
 const Convert = {
     ListTaskToTasks,

@@ -18,7 +18,7 @@ const Task = () => {
     const [inputName, setInputName] = useState<string>("");
 
     // to save all the tasks associate with the user id (and then update or delete a task)
-    const [allTheTasks, setAllTheTasks] = useState<Tasks>(null);
+    const [allTheTasks, setAllTheTasks] = useState<Tasks>(TypeBase.TasksBase(Number(idUser)));
 
     const [message, setMessage] = useState<string>("");
 

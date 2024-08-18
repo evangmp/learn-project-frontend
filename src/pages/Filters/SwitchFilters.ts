@@ -1,12 +1,12 @@
-import {ListTask} from "../../types/task.ts";
-import setAchievement from "../../Date/SetAchievement.ts";
+import {DateType, ListTask} from "../../types/task.ts";
+import ListSort from "./ListSort.ts";
 
 // take as an argument a list and return only the task(s) that are not checked in the list
-const activeTasks = (listTask: Array<ListTask>) => {
+const activeTasks = (listTask: Array<ListTask>, dateTable: DateType) => {
     const sortedList: ListTask[] = new Array<ListTask>();
 
     for(let i:number = 0; i < listTask.length; i++) {
-        if(!setAchievement.SetDefaultChecked(listTask[i].taskDate, listTask[i].taskAchievement)) {
+        if(!dateTable.defaultChecked[listTask[i].index]) {
             sortedList.push(listTask[i]);
         }
     }
@@ -14,99 +14,59 @@ const activeTasks = (listTask: Array<ListTask>) => {
 };
 
 // take as an argument a list and return only the task(s) that are checked in the list
-const completedTasks = (listTask: Array<ListTask>) => {
+const completedTasks = (listTask: Array<ListTask>, dateTable: DateType) => {
     const sortedList: ListTask[] = new Array<ListTask>();
 
-    for(let i: number = 0; i<listTask.length; i++) {
-        if(setAchievement.SetDefaultChecked(listTask[i].taskDate, listTask[i].taskAchievement)) {
+    for(let i:number = 0; i < listTask.length; i++) {
+        if(dateTable.defaultChecked[listTask[i].index]) {
             sortedList.push(listTask[i]);
         }
     }
+
     return sortedList;
 };
 
 // discipline filter : first, check the time (completed or not) filter and then set the list with the discipline
-const disciplineFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
+const disciplineFilter = (discipline: string, time: string, listAllTheTasks: ListTask[], dateTable: DateType) => {
+    const listAllTheTasksToShow: ListTask[] = ListSort.taskToShow(dateTable, listAllTheTasks);
+
     const sortedList: ListTask[] = new Array<ListTask>();
     let preSortedList: ListTask[] = new Array<ListTask>();
 
     switch(time) {
         case "All":
-            preSortedList = listAllTheTasks;
+            preSortedList = listAllTheTasksToShow;
             if(discipline == "None") {
-                return listAllTheTasks;
+                return listAllTheTasksToShow;
             }
             break;
 
         case "Active":
-            preSortedList = activeTasks(listAllTheTasks);
+            preSortedList = ListSort.taskToShow(dateTable, activeTasks(listAllTheTasks, dateTable));
             if(discipline == "None") {
                 return preSortedList;
             }
             break;
 
         case "Completed":
-            preSortedList = completedTasks(listAllTheTasks);
+            preSortedList = ListSort.taskToShow(dateTable, completedTasks(listAllTheTasksToShow, dateTable));
             if(discipline == "None") {
                 return preSortedList;
             }
             break;
     }
+
     for(let i: number = 0; i<preSortedList.length; i++) {
         if(preSortedList[i].taskDiscipline == discipline) {
             sortedList.push(preSortedList[i]);
         }
     }
-    return sortedList;
-}
 
-//
-const timeFilter = (discipline: string, time: string, listAllTheTasks: ListTask[]) => {
-    let sortedList: ListTask[] = new Array<ListTask>();
-
-    if(discipline == "None") {
-        switch (time) {
-            case "All":
-                return listAllTheTasks;
-
-            case "Active":
-                sortedList = activeTasks(listAllTheTasks);
-                break;
-
-            case "Completed":
-                sortedList = completedTasks(listAllTheTasks);
-                break;
-        }
-    }
-    else {
-        const preSortedList: ListTask[] = new Array<ListTask>();
-
-        for(let i: number = 0; i < listAllTheTasks.length; i++) {
-            if(listAllTheTasks[i].taskDiscipline == discipline) {
-                preSortedList.push(listAllTheTasks[i]);
-            }
-        }
-
-        switch(time) {
-            case "All":
-                sortedList = preSortedList;
-                break;
-
-            case "Active":
-                sortedList = activeTasks(preSortedList);
-                break;
-
-            case "Completed":
-                sortedList = completedTasks(preSortedList);
-                break;
-        }
-    }
     return sortedList;
 }
 
 const SwitchFilters = {
     disciplineFilter,
-    timeFilter,
 };
 
 export default SwitchFilters;

@@ -1,4 +1,4 @@
-import {Tasks} from "../types/task.ts";
+import {DateType, Tasks} from "../types/task.ts";
 
 const TasksBase = (idUser: number): Tasks => {
     return {
@@ -10,8 +10,19 @@ const TasksBase = (idUser: number): Tasks => {
     }
 };
 
+const DateBase = (): DateType => {
+    return {
+        taskIndex: [],
+        taskAchievement: [],
+        difference: [],
+        defaultChecked: [],
+        taskAchievementIndex: [],
+    }
+}
+
 const TypeBase = {
-    TasksBase
+    TasksBase,
+    DateBase
 };
 
 export default TypeBase;

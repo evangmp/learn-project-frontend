@@ -61,7 +61,7 @@ const Home = () => {
 
     return (
         <div style={homeStyle}>
-            <p style={{color: "black"}}>OptLearn</p>
+            <p style={{color: "black"}}>[un nom plutôt stylé]</p>
             {profile ? (
                 <div style={homeStyle}>
                     <p>id : {CookiesConfiguration.getCookie("login")}</p>
