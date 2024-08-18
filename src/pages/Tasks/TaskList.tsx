@@ -43,7 +43,6 @@ const TaskList = () => {
     const getTask = (idUser: number) => { // idUser "bonjour"
         TaskService.getUserData(idUser)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 if(response.data == "") {
                     setListTasks([]);
                     return;
@@ -67,8 +66,8 @@ const TaskList = () => {
                 setListTasks(ListSort.allTheTasksToShow(initializationTaskList));
             })
             .catch((e: Error) => {
+                console.log("Error in TaskList GetUserData method : ");
                 console.log(e.message);
-                console.log(e.stack);
             });
     };
 
@@ -77,19 +76,16 @@ const TaskList = () => {
         return SetAchievement.SetDefaultChecked(taskDate, taskAchievement);
     };
 
-
     const serviceTaskList = (taskToSend: Tasks | null, method: string) => {
-        console.log(taskToSend);
         TaskService.updateTask(taskToSend)
             .then((response: AxiosResponse) => {
-                console.debug(response.data.taskAchievement);
                 if(method == "delete") {
                     setRefreshList(true);
                     navigate("/");
                 }
             })
             .catch((e: Error) => {
-                console.log("erreur");
+                console.log("Error in TaskList updateTask : ");
                 console.log(e);
             });
     };
