@@ -15,6 +15,7 @@ const DateTypeCalculation = (allTheTask: Array<ListTask>) => {
     for (let i = 0; i < allTheTask.length; i++) {
         DateTable.taskIndex.push(i);
         DateTable.taskAchievement.push(allTheTask[i].taskAchievement);
+        DateTable.late.push(false);
 
         const dateTask: string[] = DateFunctions.sortDate(allTheTask[i].taskDate);
 

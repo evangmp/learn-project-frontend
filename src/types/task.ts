@@ -34,4 +34,5 @@ export interface DateType {
     taskAchievement: AchievementTable[],
     taskAchievementIndex: number[],
     defaultChecked: boolean[],
+    late: boolean[],
 }

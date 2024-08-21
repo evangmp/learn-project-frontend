@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {CSSProperties, useEffect, useState} from "react";
 import {AchievementTable, DateType, ListTask, Tasks} from "../../types/Task.ts";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
@@ -124,14 +124,25 @@ const TaskList = () => {
         // bring the achievementTable of the actual task
         const taskAchievementTable : AchievementTable | undefined = updateDate?.taskAchievement[task.index];
 
-        // condition if it is actually 0 or 1 (not checked or checked) and inverse 0 => 1
-        if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 0){
-            taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 1;
+        if(DateTable.late[task.index] && DateTable.taskAchievementIndex[task.index] < 0) {
+            const dayWhereTaskAppear: number[] = [0, 1, 3, 7, 14, 30, 60, 120, 240, 360];
+
+            for(let m = 0; m < dayWhereTaskAppear.length; m++) {
+                if(DateTable.difference[task.index]-1 == dayWhereTaskAppear[m]) {
+                    taskAchievementTable[m] = 1;
+                }
+            }
         }
-        else if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 1) {
-            taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 0;
+        else {
+            // condition if it is actually 0 or 1 (not checked or checked) and inverse 0 => 1
+            if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 0){
+                taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 1;
+            }
+            else if(updateDate?.taskAchievement[task.index][updateDate?.taskAchievementIndex[task.index]] === 1) {
+                taskAchievementTable[updateDate.taskAchievementIndex[task.index]] = 0;
+            }
+            else {console.log("ALERTE MAXIMALE C4EST PAS NORMAL")}
         }
-        else {console.log("ALERTE MAXIMALE C4EST PAS NORMAL")}
 
         // replace achievementTable
         updateDate.taskAchievement[task.index] = taskAchievementTable;
@@ -176,6 +187,11 @@ const TaskList = () => {
     const MathematicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "mathematics", setDisciplineFilter, disciplineUpdateFilter);
     const PhysicsDisciplineFilter: JSX.Element = Filters.defaultFilter(disciplineFilter, "physics", setDisciplineFilter, disciplineUpdateFilter);
 
+    const divCSS: CSSProperties = {
+        color: "red",
+    };
+
+
     return (
         <div className="list row">
             <div className="col-md-6">
@@ -206,18 +222,15 @@ const TaskList = () => {
                                     <div className="checkbox-wrapper-15">
                                         <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSInput.inputList}
                                                defaultChecked={defaultChecked(task.index)}
-                                               onChange={() => {
-                                                   updateTask(task);
-                                                   //task.taskAchievement = achievementUpdate(task);
-                                               }}
+                                               onChange={() => {updateTask(task);}}
                                         />
                                         <label className="cbx" htmlFor={"cbx-15" + task.taskDate}>
                                             <div>
                                                 <span>
-                                                    <svg width="12px" height="9px" viewBox="0 0 12 9">
+                                                    <svg width="12px" height="9px" viewBox="0 0 12 9" >
                                                     <polyline points="1 5 4 8 11 1"></polyline>
                                                     </svg>
-                                                    </span>
+                                                </span>
                                                 <span>{task.taskName}</span>
                                             </div>
                                             <div>
@@ -227,6 +240,11 @@ const TaskList = () => {
                                                 </span>
                                                 <span>Discipline : {task.taskDiscipline}</span>
                                             </div>
+                                            {DateTable.late[task.index] ? (
+                                                <div>
+                                                    <p style={divCSS}>this has not been revised the previous day</p>
+                                                </div>
+                                                ) : null}
                                         </label>
                                     </div>
 

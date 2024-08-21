@@ -17,6 +17,7 @@ const DateBase = (): DateType => {
         difference: [],
         defaultChecked: [],
         taskAchievementIndex: [],
+        late: [],
     }
 }
 
