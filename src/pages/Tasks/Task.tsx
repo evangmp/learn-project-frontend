@@ -1,6 +1,6 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Discipline, Tasks} from "../../types/Task.ts";
+import {Discipline, Tasks} from "../../types/Task";
 import {AxiosResponse} from "axios";
 import CSSInput from "../../CSS/CSS-input.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
@@ -99,7 +99,7 @@ const Task = () => {
         const taskToSend: Tasks = TypeBase.TasksBase(Number(idUser));
 
         let i =0;
-        for(let m = 0; m < taskToSend.taskAchievement.length; m++) {
+        for(let m = 0; m < allTheTasks.taskName.length; m++) {
             if(m !== Number(idTask)) {
                 taskToSend.taskName.push(allTheTasks.taskName[i]);
                 taskToSend.taskDiscipline.push(allTheTasks.taskDiscipline[i]);
@@ -185,11 +185,9 @@ const Task = () => {
                 <div>
                     <button
                         style={CSSButton.buttonConnectionPageSettings}
-
+                        onClick={() => navigate("/")}
                     >
-                        <Link to={"/"}>
-                            Cancel
-                        </Link>
+                        Cancel
                     </button>
                 </div>
             </div>

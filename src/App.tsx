@@ -1,7 +1,6 @@
 import React, {CSSProperties} from 'react';
 import './App.css';
 import Router from "./pages/Router.tsx";
-import HomeRouter from "./pages/HomeRouter.tsx";
 
 const App: React.FC = () => {
 
@@ -17,11 +16,7 @@ const App: React.FC = () => {
 
     return (
         <div className= "first-div" style={testMain}>
-            <div>
-                <HomeRouter/>
-            </div>
             <Router />
-
         </div>
     );
 };

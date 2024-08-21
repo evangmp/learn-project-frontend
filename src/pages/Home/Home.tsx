@@ -2,14 +2,25 @@ import React, {CSSProperties, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
-import SecurityService from "../../services/AuthentificationService.ts";
-import {AxiosResponse} from "axios";
+import ProfileMenuBar from "./ProfileMenuBar.tsx";
+import LogOut from "./LogOut.tsx";
 
-const Home = () => {
+interface HomeProps {
+    setTasksParameters:  React.Dispatch<React.SetStateAction<boolean>>,
+    setAccountParameters:  React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Home = ({setTasksParameters, setAccountParameters}: HomeProps) => {
     const navigate = useNavigate();
+
+    // if the user is connected
     const [profile, setProfile] = useState<boolean>(false);
 
-    const [logout, setLogout] = useState(false);
+    // if the user is log out or no
+    const [logout, setLogout] = useState<boolean>(false);
+
+    // if the menu of parameters is open or not
+    const [profileBar, setProfileBar] = useState<boolean>(false);
 
     // see if there is already a cookie or if the user is connected
     useEffect(() => {
@@ -20,28 +31,6 @@ const Home = () => {
             return;
 
     }, [navigate, logout]);
-
-    // log out method to delete the cookie, delete the token in DB and navigate to home
-    const logOut = () => {
-        const idUser = CookiesConfiguration.getCookie("login");
-
-        CookiesConfiguration.deleteCookie("login");
-        CookiesConfiguration.deleteCookie(idUser);
-
-        // delete the token in DB
-        SecurityService.deleteToken(Number(idUser))
-            .then((response: AxiosResponse) => {
-                console.log("delete Token task home : ");
-                console.log(response.data);
-                setProfile(false);
-                setLogout(true);
-                navigate("/add");
-            })
-            .catch((e: Error) => {
-                console.log(e);
-
-            });
-    };
 
     // CSS properties
     const homeStyle: CSSProperties = {
@@ -54,9 +43,15 @@ const Home = () => {
         padding: '20px', // Optional: Add some padding for better spacing
     };
 
-    const buttonsContainerStyle = {
+    const buttonsContainerStyle: CSSProperties = {
         display: 'flex',
         gap: '15px', // Space between buttons
+        height: '6rem',
+    };
+
+    const profileButton: CSSProperties = {
+        width: '6rem',
+        height: '4rem',
     };
 
     return (
@@ -64,11 +59,22 @@ const Home = () => {
             <p style={{color: "black"}}>[un nom plutôt stylé]</p>
             {profile ? (
                 <div style={homeStyle}>
-                    <p>id : {CookiesConfiguration.getCookie("login")}</p>
-
-                    <div>
-                        <button style={CSSButton.buttonConnectionPageSettings} className="connection-button" onClick={logOut}>
-                            <span>Log out</span>
+                    <div style={buttonsContainerStyle}>
+                        <div>
+                            {profileBar ? (<ProfileMenuBar id={56}
+                                                           setProfile={setProfile}
+                                                           setLogout={setLogout}
+                                                           setAccountParameters={setAccountParameters}
+                                                           setTasksParameters={setTasksParameters}/>) : (
+                                <div style={buttonsContainerStyle}>
+                                    <p>id : {CookiesConfiguration.getCookie("login")}</p>
+                                    <LogOut setProfile={setProfile} setLogout={setLogout}/>
+                                </div>
+                            )}
+                        </div>
+                        <button onClick={() => setProfileBar(!profileBar)}>
+                            <img src={"src/assets/Default_pfp.svg.png"} alt={"default profile"}
+                                 style={profileButton}/>
                         </button>
                     </div>
                 </div>

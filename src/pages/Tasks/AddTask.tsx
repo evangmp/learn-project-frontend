@@ -124,6 +124,12 @@ const AddTask = () => {
                     >
                         Add
                     </button>
+                    <button
+                        style={CSSButton.buttonGeneralSettings}
+                        className="btn btn-success"
+                        onClick={() => navigate("/")}>
+                        Go home
+                    </button>
                 </div>
             ) : (
                 <div>

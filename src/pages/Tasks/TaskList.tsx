@@ -1,5 +1,5 @@
 import React, {CSSProperties, useEffect, useState} from "react";
-import {AchievementTable, DateType, ListTask, Tasks} from "../../types/Task.ts";
+import {AchievementTable, DateType, ListTask, Tasks} from "../../types/Task";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
 import Filters from "../Filters/Filters.tsx";
