@@ -15,8 +15,15 @@ const divTaskSetting: CSSProperties = {
     flex: "0 0 100%",
 };
 
+const alignElements: CSSProperties = {
+    display: 'flex',
+    alignItems: 'stretch',
+
+}
+
 const CSSDiv = {
     divTaskSetting,
+    alignElements,
 };
 
 export default CSSDiv;

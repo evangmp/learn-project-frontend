@@ -12,8 +12,6 @@ const taskToShow = (dateTable: DateType, listTask: Array<ListTask>) => {
         // initially, I wanted to do a switch, but in the future I want that users can choose their own revision time space
         for(let m = 0; m < dayWhereTaskAppear.length; m++) {
             if(dateTable.difference[listTask[i].index]-1 == dayWhereTaskAppear[m] && listTask[i].taskAchievement[m] == 0) {
-                console.log("oui");
-                console.log(listTask[i]);
                 sortedList.push(listTask[i]);
                 dateTable.late[listTask[i].index] = true;
             }

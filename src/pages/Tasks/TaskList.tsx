@@ -213,11 +213,10 @@ const TaskList = () => {
 
                 <ul className="list-group">
                     {listTasks && listTasks.map((task: ListTask) => (
-                            <div style={{padding: '2rem'}}>
+                            <div style={{padding: '2rem'}} key={task.taskDate}>
 
                                 <li style={CSSList.listGeneralSettings}
                                     className={"list-group-item " + task.taskDate}
-                                    key={task.taskDate}
                                 >
                                     <div className="checkbox-wrapper-15">
                                         <input className="inp-cbx" id={"cbx-15" + task.taskDate} type="checkbox" style={CSSInput.inputList}

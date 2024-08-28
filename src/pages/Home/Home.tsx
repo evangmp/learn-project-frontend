@@ -4,6 +4,7 @@ import CookiesConfiguration from "../../Cookies/CookiesConfiguration.ts";
 import CSSButton from "../../CSS/CSS-button.ts";
 import ProfileMenuBar from "./ProfileMenuBar.tsx";
 import LogOut from "./LogOut.tsx";
+import CSSImg from "../../CSS/CSS-img.ts";
 
 interface HomeProps {
     setTasksParameters:  React.Dispatch<React.SetStateAction<boolean>>,
@@ -49,11 +50,6 @@ const Home = ({setTasksParameters, setAccountParameters}: HomeProps) => {
         height: '6rem',
     };
 
-    const profileButton: CSSProperties = {
-        width: '6rem',
-        height: '4rem',
-    };
-
     return (
         <div style={homeStyle}>
             <p style={{color: "black"}}>[un nom plutôt stylé]</p>
@@ -74,7 +70,7 @@ const Home = ({setTasksParameters, setAccountParameters}: HomeProps) => {
                         </div>
                         <button onClick={() => setProfileBar(!profileBar)}>
                             <img src={"src/assets/Default_pfp.svg.png"} alt={"default profile"}
-                                 style={profileButton}/>
+                                 style={CSSImg.forProfileButton}/>
                         </button>
                     </div>
                 </div>
